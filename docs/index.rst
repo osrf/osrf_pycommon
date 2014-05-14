@@ -11,8 +11,9 @@ Code should be pure Python as well as Python 2 and Python 3 bilingual.
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
+    terminal_color
 
 Installing from Source
 ----------------------
