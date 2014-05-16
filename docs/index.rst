@@ -60,7 +60,9 @@ That will "uninstall" the hooks into the ``PYTHONPATH`` which point to your sour
 Testing
 -------
 
-In order to run the tests you will need to install `nosetests <https://nose.readthedocs.org/>`_, then run ``nosetest`` in the root of the ``osrf_pycommon`` soruce directory:
+In order to run the tests you will need to install `nosetests <https://nose.readthedocs.org/>`_ and `flake8 <https://flake8.readthedocs.org/>`_.
+
+Once you have installed those, then run ``nosetest`` in the root of the ``osrf_pycommon`` source directory:
 
 .. code-block:: bash
 
@@ -69,7 +71,7 @@ In order to run the tests you will need to install `nosetests <https://nose.read
 Building the Documentation
 --------------------------
 
-Inorder to build the docs you will need to first install `Sphinx <http://sphinx-doc.org/>`_.
+In order to build the docs you will need to first install `Sphinx <http://sphinx-doc.org/>`_.
 
 You can build the documentation by invoking the Sphinx provided make target in the ``docs`` folder:
 
