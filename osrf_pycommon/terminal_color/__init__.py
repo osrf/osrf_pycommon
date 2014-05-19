@@ -92,6 +92,9 @@ This is a list of all of the available substitutions:
 | ``@{invoff}``     |              | ``\\033[27m`` |
 +-------------------+--------------+--------------+
 
+These substitution's values come from the ANSI color escape sequences,
+see: http://en.wikipedia.org/wiki/ANSI_escape_code
+
 Also for any of the keys which have a trailing ``f``, you can safely drop the
 trailing ``f`` and get the same thing.
 
