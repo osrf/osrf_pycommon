@@ -14,6 +14,7 @@ Contents:
     :maxdepth: 2
 
     terminal_color
+    terminal_utils
 
 Installing from Source
 ----------------------
@@ -61,7 +62,7 @@ That will "uninstall" the hooks into the ``PYTHONPATH`` which point to your sour
 Testing
 -------
 
-In order to run the tests you will need to install `nosetests <https://nose.readthedocs.org/>`_ and `flake8 <https://flake8.readthedocs.org/>`_.
+In order to run the tests you will need to install `nosetests <https://nose.readthedocs.org/>`_, `flake8 <https://flake8.readthedocs.org/>`_, and `Mock <http://www.voidspace.org.uk/python/mock/>`_.
 
 Once you have installed those, then run ``nosetest`` in the root of the ``osrf_pycommon`` source directory:
 
