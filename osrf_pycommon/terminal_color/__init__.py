@@ -124,6 +124,26 @@ style ansi escape sequences must be passed to :py:func:`print_color` in order
 for colors to be displayed on windows.
 Also the :py:func:`print_ansi_color_win32` function can be used on strings
 which only contain ansi escape sequences.
+
+.. note::
+
+    There are existing Python modules like
+    `colorama <https://pypi.python.org/pypi/colorama>`_ which provide ansi
+    colorization on multiple platforms, so a valid question is:
+    "why write this module?".
+    The reason for writing this module is to provide the color annotation of
+    strings and functions for removing or replacing ansi escape sequences which
+    are not provided by modules like colorama.
+    This module could have depended on colorama for colorization on Windows,
+    but colorama works by replacing the built-in ``sys.stdout`` and
+    ``sys.stderr``, which we did not want and it has extra functionality that
+    we do not need.
+    So, instead of depending on colorama, the Windows color printing code
+    was used as the inspiration for the Windows color printing in the
+    ``windows.py`` module in this ``terminal_color`` package.
+    The colorama license was placed in the header of that file and the colorama
+    license is compatible with this package's license.
+
 """
 
 from .ansi_re import remove_ansi_escape_senquences
