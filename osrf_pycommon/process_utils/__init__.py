@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from .impl import execute_process
 from .impl import which
 
-__all__ = ['which']
+__all__ = ['execute_process', 'which']

@@ -14,10 +14,144 @@
 
 import os
 
+
+from .execute_process_nopty import _execute_process_nopty
+try:
+    from .execute_process_pty import _execute_process_pty
+except ImportError:
+    # pty doesn't work on Windows, it will fail to import
+    # so fallback to non pty implementation
+    _execute_process_pty = None
+
 try:
     _basestring = basestring  # Python 2
 except NameError:
     _basestring = str  # Python 3
+
+
+def execute_process(cmd, cwd=None, env=None, shell=False, emulate_tty=False):
+    """Executes a command with arguments and returns output line by line.
+
+    All arguments, except ``emulate_tty``, are passed directly to
+    :py:class:`subprocess.Popen`.
+
+    ``execute_process`` returns a generator which, when ``yield`` is called on
+    it, will return the output of ``stdout`` and ``stderr``, interleaved,
+    until the subprocess finishes at which point ``yield`` will return the
+    return code.
+
+    This is an example of how this function should be used:
+
+    .. code-block:: python
+
+        from osrf_pycommon.process_utils import execute_process
+
+        def do_ls():
+            for line in execute_process(['ls', '-G'], cwd='/usr'):
+                if isinstance(line, int):
+                    # This is a return code, the command has exited
+                    return line
+                # Do some filtering or checking based on the output
+                # Then print it to the screen
+                print(line, end='')
+
+        print("`ls` exited with return code: '{0}'".format(do_ls()))
+
+    ``stdout`` and ``stderr`` are always captured together and returned line
+    by line through the returned generator.
+    New line characters are preserved in the output, so if re-printing the data
+    take care to use ``end=''`` or first ``rstrip`` the output lines.
+    If you need some other behavior use one of the :py:mod:`subprocess`
+    functions.
+
+    When ``emulate_tty`` is used on Unix systems, commands will identify that
+    they are on a tty and should output color to the screen as if you were
+    running it on the terminal, and therefore there should not be any need to
+    pass arguments like ``-c color.ui=always`` to commands like ``git``.
+    Additionally, programs might also behave differently in when
+    ``emulate_tty`` is being used, for example, Python will default to
+    unbuffered output when it detects a tty.
+
+    ``emulate_tty`` works by using psuedo-terminals on Unix machines, and so
+    if you are running this command many times in parallel (like hundreds
+    of times) then you may get one of a few different :py:exc:`OSError`'s.
+    For example, "OSError: [Errno 24] Too many open files: '/dev/ttyp0'" or
+    "OSError: out of pty devices".
+    You should also be aware that you share pty devices with the rest of the
+    system, so even if you are not using a lot, it is possible to get
+    this error.
+    You can catch this error before getting data from the generator, so when
+    using ``emulate_tty`` you might want to do something like this:
+
+    .. code-block:: python
+
+        from osrf_pycommon.process_utils import execute_process
+
+        cmd = ['ls', '-G', '/usr']
+        try:
+            output = execute_process(cmd, emulate_tty=True)
+        except OSError:
+            output = execute_process(cmd, emulate_tty=False)
+        for line in output:
+            print(line, end='')
+
+    This way if a pty cannot be opened in order to emulate the tty then you
+    can try again without emulation, and any other :py:exc:`OSError` should
+    raise again with ``emulate_tty`` set to ``False``.
+    Obviously, you only want to do this if emulating the tty is non-critical
+    to your processing, like when you are using it to capture color.
+
+    Any color information that the command outputs as ANSI escape sequences
+    is captured by this command.
+    That way you can print the output to the screen and preserve the color
+    formatting.
+
+    If you do not want color to be in the output, then try setting
+    ``emulate_tty`` to ``False``, but that does not guarantee that there is no
+    color in the output, instead it only will cause called processes to
+    identify that they are not being run in a terminal.
+    Most programs will not output color if they detect that they are not being
+    executed in a terminal.
+
+    If you want to ensure there is no color in the output from an executed
+    process, then use this function:
+
+    :py:func:`osrf_pycommon.terminal_color.remove_ansi_escape_senquences`
+
+    Exceptions can be raised by functions called by the implementation,
+    for example, :py:class:`subprocess.Popen` can raise an :py:exc:`OSError`
+    when the given command is not found.
+    If you want to check for the existence of an executable on the path,
+    see: :py:func:`which`.
+    However, this function itself does not raise any special exceptions.
+
+    :param list cmd: list of strings with the first item being a command
+        and subsequent items being any arguments to that command;
+        passed directly to :py:class:`subprocess.Popen`.
+    :param str cwd: path in which to run the command, defaults to None which
+        means :py:func:`os.getcwd` is used;
+        passed directly to :py:class:`subprocess.Popen`.
+    :param dict env: environment dictionary to use for executing the command,
+        default is None which uses the :py:obj:`os.environ` environment;
+        passed directly to :py:class:`subprocess.Popen`.
+    :param bool shell: If True the system shell is used to evaluate the
+        command, default is False;
+        passed directly to :py:class:`subprocess.Popen`.
+    :param bool emulate_tty: If True attempts to use a pty to convince
+        subprocess's that they are being run in a terminal. Typically this is
+        useful for capturing colorized output from commands. This does not
+        work on Windows (no pty's), so it is considered False even when True.
+        Defaults to False.
+    :returns: a generator which yields output from the command line by line
+    :rtype: generator which yields strings
+    """
+    exp_func = _execute_process_nopty
+    if emulate_tty and _execute_process_pty is not None:
+        exp_func = _execute_process_pty
+    for out, err, ret in exp_func(cmd, cwd, env, shell, stderr_to_stdout=True):
+        if ret is None:
+            yield out
+        yield ret
 
 
 def which(program, paths=None):
