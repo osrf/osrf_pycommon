@@ -12,6 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""This module provides functions for doing process management.
+
+For example, this module provides a python implementation of ``which()`` and
+a function for executing a subprocess with ``tty`` emulation.
+"""
+
 from .impl import execute_process
 from .impl import which
 

@@ -21,6 +21,9 @@ from subprocess import STDOUT
 
 
 def _process_incoming_lines(incoming, left_over, linesep):
+    # This function takes the new data, the left over data from last time
+    # and returns a list of complete lines (separated by linesep) as well as
+    # any linesep trailing data for the next iteration
     lines = (left_over + incoming).splitlines(True)  # Keep line endings
     if not lines:
         return None, left_over
@@ -34,6 +37,7 @@ def _process_incoming_lines(incoming, left_over, linesep):
 
 
 def _close_fds(fds_to_close):
+    # This function is used to close (if not already closed) any fds used
     for s in fds_to_close:
         if s is None:
             continue
@@ -46,6 +50,8 @@ def _close_fds(fds_to_close):
 
 
 def _yield_data(p, fds, left_overs, linesep, fds_to_close=None):
+    # This function uses select and subprocess.Popen.poll to collect out
+    # from a subprocess until it has finished, yielding it as it goes
     fds_to_close = [] if fds_to_close is None else fds_to_close
 
     def yield_to_stream(data, stream):

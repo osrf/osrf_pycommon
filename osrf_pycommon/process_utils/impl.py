@@ -14,7 +14,6 @@
 
 import os
 
-
 from .execute_process_nopty import _execute_process_nopty
 try:
     from .execute_process_pty import _execute_process_pty
@@ -35,10 +34,9 @@ def execute_process(cmd, cwd=None, env=None, shell=False, emulate_tty=False):
     All arguments, except ``emulate_tty``, are passed directly to
     :py:class:`subprocess.Popen`.
 
-    ``execute_process`` returns a generator which, when ``yield`` is called on
-    it, will return the output of ``stdout`` and ``stderr``, interleaved,
-    until the subprocess finishes at which point ``yield`` will return the
-    return code.
+    ``execute_process`` returns a generator which yields the output, line by
+    line, until the subprocess finishes at which point the return code
+    is yielded.
 
     This is an example of how this function should be used:
 
@@ -46,23 +44,19 @@ def execute_process(cmd, cwd=None, env=None, shell=False, emulate_tty=False):
 
         from osrf_pycommon.process_utils import execute_process
 
-        def do_ls():
-            for line in execute_process(['ls', '-G'], cwd='/usr'):
-                if isinstance(line, int):
-                    # This is a return code, the command has exited
-                    return line
-                # Do some filtering or checking based on the output
-                # Then print it to the screen
-                print(line, end='')
-
-        print("`ls` exited with return code: '{0}'".format(do_ls()))
+        cmd = ['ls', '-G']
+        for line in execute_process(cmd, cwd='/usr'):
+            if isinstance(line, int):
+                # This is a return code, the command has exited
+                print("'{0}' exited with: {1}".format(' '.join(cmd), line))
+                continue  # break would also be appropriate here
+            # Then print it to the screen
+            print(line, end='')
 
     ``stdout`` and ``stderr`` are always captured together and returned line
     by line through the returned generator.
     New line characters are preserved in the output, so if re-printing the data
     take care to use ``end=''`` or first ``rstrip`` the output lines.
-    If you need some other behavior use one of the :py:mod:`subprocess`
-    functions.
 
     When ``emulate_tty`` is used on Unix systems, commands will identify that
     they are on a tty and should output color to the screen as if you were
@@ -93,6 +87,9 @@ def execute_process(cmd, cwd=None, env=None, shell=False, emulate_tty=False):
         except OSError:
             output = execute_process(cmd, emulate_tty=False)
         for line in output:
+            if isinstance(line, int):
+                print("'{0}' exited with: {1}".format(' '.join(cmd), line))
+                continue
             print(line, end='')
 
     This way if a pty cannot be opened in order to emulate the tty then you
@@ -110,8 +107,8 @@ def execute_process(cmd, cwd=None, env=None, shell=False, emulate_tty=False):
     ``emulate_tty`` to ``False``, but that does not guarantee that there is no
     color in the output, instead it only will cause called processes to
     identify that they are not being run in a terminal.
-    Most programs will not output color if they detect that they are not being
-    executed in a terminal.
+    Most well behaved programs will not output color if they detect that
+    they are not being executed in a terminal, but you shouldn't rely on that.
 
     If you want to ensure there is no color in the output from an executed
     process, then use this function:
