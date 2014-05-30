@@ -60,7 +60,9 @@ def _get_terminal_dimensions_windows():
     return width, height
 
 
-def _get_terminal_dimensions_linux():
+def _get_terminal_dimensions_unix():
+    # This function uses `tput` and should work on any Unix system
+    # See: http://en.wikipedia.org/wiki/Tput
     try:
         width = subprocess.check_output(['tput', 'cols'])
 
@@ -88,7 +90,7 @@ def get_terminal_dimensions():
     """
     if os.name in ['nt']:
         return _get_terminal_dimensions_windows()
-    return _get_terminal_dimensions_linux()
+    return _get_terminal_dimensions_unix()
 
 
 def is_tty(stream):
