@@ -27,13 +27,14 @@ def _process_incoming_lines(incoming, left_over, linesep):
     lines = (left_over + incoming).splitlines(True)  # Keep line endings
     if not lines:
         return None, left_over
+    linesep = linesep.encode('utf-8')
     if lines[-1].endswith(linesep):
         data = b''.join(lines)
         left_over = b''
     else:
         data = b''.join(lines[:-1])
         left_over = lines[-1]
-    return data, left_over
+    return data.decode('utf-8'), left_over
 
 
 def _close_fds(fds_to_close):
@@ -96,6 +97,6 @@ def _execute_process_nopty(cmd, cwd, env, shell, stderr_to_stdout=True):
     # Left over data from read which isn't a complete line yet
     left_overs = {p.stdout: b'', p.stderr: b''}
 
-    fds = filter(None, [p.stdout, p.stderr])
+    fds = list(filter(None, [p.stdout, p.stderr]))
 
     return _yield_data(p, fds, left_overs, os.linesep)
