@@ -19,6 +19,7 @@ a function for executing a subprocess with ``tty`` emulation.
 """
 
 from .impl import execute_process
+from .impl import execute_process_split
 from .impl import which
 
-__all__ = ['execute_process', 'which']
+__all__ = ['execute_process', 'execute_process_split', 'which']

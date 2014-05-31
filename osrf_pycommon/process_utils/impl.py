@@ -151,6 +151,55 @@ def execute_process(cmd, cwd=None, env=None, shell=False, emulate_tty=False):
         yield ret
 
 
+def execute_process_split(
+    cmd, cwd=None, env=None, shell=False, emulate_tty=False
+):
+    """:py:func:`execute_process`, except ``stderr`` is returned separately.
+
+    Instead of yielding output line by line until yielding a return code, this
+    function always a triplet of ``stdout``, ``stderr``, and return code.
+    Each time only one of the three will not be None.
+    Once you receive a non-None return code (type will be int) there will be no
+    more ``stdout`` or ``stderr``.
+    Therefore you can use the command like this:
+
+    .. code-block:: python
+
+        import sys
+        from osrf_pycommon.process_utils import execute_process_split
+
+        cmd = ['ls', '-G']
+        for out, err, ret in execute_process_split(cmd, cwd='/usr'):
+            if ret is not None:
+                # This is a return code, the command has exited
+                print("'{0}' exited with: {1}".format(' '.join(cmd), ret))
+            elif out is not None:
+                print(out, end='')
+            elif err is not None:
+                print(err, end='', file=sys.stderr)
+
+    When using this, it is possible that the ``stdout`` and ``stderr`` data can
+    be returned in a different order than what would happen on the terminal.
+    This is due to the fact that the subprocess is given different buffers for
+    ``stdout`` and ``stderr`` and so there is a race condition on the
+    subprocess writing to the different buffers and this command reading the
+    buffers.
+    This can be avoided in most scenarios by using ``emulate_tty``, because of
+    the use of ``pty``'s, though the ordering can still not be guaranteed and
+    the number of ``pty``'s is finite as explained in the documentation for
+    :py:func:`execute_process`.
+    For situations where output ordering between ``stdout`` and ``stderr`` are
+    critical, they should not be returned separately and instead should share
+    one buffer, and so :py:func:`execute_process` should be used.
+
+    For all other parameters and documentation see: :py:func:`execute_process`
+    """
+    exp_func = _execute_process_nopty
+    if emulate_tty and _execute_process_pty is not None:
+        exp_func = _execute_process_pty
+    return exp_func(cmd, cwd, env, shell, stderr_to_stdout=True)
+
+
 def which(program, paths=None):
     """Custom version of the ``which`` built-in shell command.
 
