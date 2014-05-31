@@ -54,12 +54,13 @@ def _execute_process_pty(cmd, cwd, env, shell, stderr_to_stdout=True):
                     time.sleep(0.01)
                     continue
                 raise
-        # pty behavior is different on OS X
-        if sys.platform.lower().startswith('darwin'):
-            # This causes the below select to exit when the subprocess closes
-            os.close(stdout_slave)
-            if not stderr_to_stdout:
-                os.close(stderr_slave)
+        # This causes the below select to exit when the subprocess closes.
+        # On Linux, this sometimes causes Errno 5 OSError's when os.read
+        # is called from within _yield_data, so on Linux _yield_data
+        # catches and passes on that particular OSError.
+        os.close(stdout_slave)
+        if not stderr_to_stdout:
+            os.close(stderr_slave)
 
         left_overs = {stdout_master: b'', stderr_master: b''}
 

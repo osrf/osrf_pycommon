@@ -14,10 +14,13 @@
 
 import os
 import select
+import sys
 
 from subprocess import PIPE
 from subprocess import Popen
 from subprocess import STDOUT
+
+_is_linux = sys.platform.lower().startswith('linux')
 
 
 def _process_incoming_lines(incoming, left_over, linesep):
@@ -67,7 +70,22 @@ def _yield_data(p, fds, left_overs, linesep, fds_to_close=None):
             for stream in rlist:
                 left_over = left_overs[stream]
                 fileno = getattr(stream, 'fileno', lambda: stream)()
-                incoming = os.read(fileno, 1024)
+                try:
+                    incoming = os.read(fileno, 1024)
+                except OSError as exc:
+                    # On Linux, when using a pty, in order to get select
+                    # to return when the subprocess finishes, os.close
+                    # must be called on the slave pty fd after forking
+                    # the subprocess with popen. On some versions of
+                    # the Linux kernel this causes an Errno 5 OSError,
+                    # "Input/output error". Therefore, I am explicitly
+                    # catching and passing on this error. In my testing
+                    # this error does not occur repeatedly (it does not
+                    # become a busy wait). See:
+                    #   http://stackoverflow.com/a/12207447/671658
+                    if _is_linux and "Input/output error" in "{0}".format(exc):
+                        continue
+                    raise
                 if not incoming:
                     # In this case, EOF has been reached, see docs for os.read
                     if left_over:
