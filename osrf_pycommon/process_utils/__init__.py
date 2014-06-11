@@ -18,8 +18,19 @@ For example, this module provides a python implementation of ``which()`` and
 a function for executing a subprocess with ``tty`` emulation.
 """
 
+from .async_execute_process import async_execute_process
+from .async_execute_process import asyncio
+from .async_execute_process import AsyncSubprocessProtocol
+
 from .impl import execute_process
 from .impl import execute_process_split
 from .impl import which
 
-__all__ = ['execute_process', 'execute_process_split', 'which']
+__all__ = [
+    'async_execute_process',
+    'asyncio',
+    'AsyncSubprocessProtocol',
+    'execute_process',
+    'execute_process_split',
+    'which',
+]
