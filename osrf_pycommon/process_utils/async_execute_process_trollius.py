@@ -23,7 +23,11 @@ try:
 except ImportError:
     has_pty = False
 
-loop = asyncio.get_event_loop()
+if os.name == 'nt':
+    loop = asyncio.ProactorEventLoop()
+    asyncio.set_event_loop(loop)
+else:
+    loop = asyncio.get_event_loop()
 
 
 @asyncio.coroutine
