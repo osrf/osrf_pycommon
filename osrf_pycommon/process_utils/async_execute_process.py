@@ -36,6 +36,117 @@ __all__ = [
     'loop',
 ]
 
+async_execute_process.__doc__ = """
+Coroutine to execute a subprocess and yield the output back asynchronously.
+
+This function is meant to be used with the Python :py:mod:`asyncio` module,
+which is available via pip with Python 3.3 and built-in to Python 3.4.
+On Python >= 2.6 you can use the :py:mod:`trollius` module to get the same
+functionality, but without using the new ``yield from`` syntax.
+
+Here is an example of how to use this function:
+
+.. code-block:: python
+
+    import asyncio
+    from osrf_pycommon.process_utils import async_execute_process
+    from osrf_pycommon.process_utils import AsyncSubprocessProtocol
+    from osrf_pycommon.process_utils import loop
+
+    @asyncio.coroutine
+    def setup():
+        transport, protocol = async_execute_process(
+            AsyncSubprocessProtocol, ['ls', '/usr'])
+        returncode = yield from protocol.complete
+        return returncode
+
+    retcode = loop.run_until_complete(setup())
+
+That same example using :py:mod:`trollius` would look like this:
+
+.. code-block:: python
+
+    import trollius as asyncio
+    from osrf_pycommon.process_utils import async_execute_process
+    from osrf_pycommon.process_utils import AsyncSubprocessProtocol
+    from osrf_pycommon.process_utils import loop
+
+    @asyncio.coroutine
+    def setup():
+        transport, protocol = async_execute_process(
+            AsyncSubprocessProtocol, ['ls', '/usr'])
+        returncode = yield asyncio.From(protocol.complete)
+        raise asyncio.Return(returncode)
+
+    retcode = loop.run_until_complete(setup())
+
+This difference is required because in Python < 3.3 the ``yield from`` syntax
+is not valid.
+
+In both examples, the first argument is the default
+:py:class:`AsyncSubprocessProtocol` protocol class, which simply prints output
+from stdout to stdout and output from stderr to stderr.
+
+If you want to capture and do something with the output or write to the stdin,
+then you need to subclass from the :py:class:`AsyncSubprocessProtocol` class,
+and override the ``on_stdout_received``, ``on_stderr_received``, and
+``on_process_exited`` functions.
+
+See the documentation for the :py:class:`AsyncSubprocessProtocol` class for
+more details, but here is an example:
+
+.. code-block:: python
+
+    import trollius as asyncio
+    from osrf_pycommon.process_utils import async_execute_process
+    from osrf_pycommon.process_utils import AsyncSubprocessProtocol
+    from osrf_pycommon.process_utils import loop
+
+    class MyProtocol(AsyncSubprocessProtocol):
+        def __init__(self, file_name, **kwargs):
+            self.fh = open(file_name, 'w')
+            AsyncSubprocessProtocol.__init__(self, **kwargs)
+
+        def on_stdout_received(self, data):
+            self.fh.write(data)  # Data has line endings intact
+
+        def on_stderr_received(self, data):
+            self.fh.write(data)
+
+        def on_process_exited(self, returncode):
+            self.fh.write("Exited with return code: {0}".format(returncode))
+            self.fh.close()
+
+    @asyncio.coroutine
+    def log_command_to_file(self, cmd, file_name):
+
+        def create_protocol(**kwargs):
+            return MyProtocol(file_name, **kwargs)
+
+        transport, protocol = async_execute_process(create_protocol, cmd)
+        returncode = yield from protocol.complete
+        return returncode
+
+    loop.run_until_complete(log_command_to_file(['ls', '/'], '/tmp/out.txt'))
+
+See the :py:class:`subprocess.Popen` class for more details on some of the
+parameters to this function like ``cwd``, ``env``, and ``shell``.
+
+See the :py:func:`osrf_pycommon.process_utils.execute_process` function for
+more details on the ``emulate_tty`` parameter.
+
+:param protocol_class: Protocol class which handles subprocess callbacks
+:type protocol_class: :py:class:`AsyncSubprocessProtocol` or a subclass
+:param list cmd: list of arguments where the executable is the first item
+:param str cwd: directory in which to run the command
+:param dict env: a dictionary of environment variable names to values
+:param bool shell: if True, the ``cmd`` variable is interpreted by a the shell
+:param bool emulate_tty: if True, pty's are passed to the subprocess for stdout
+    and stderr, see :py:func:`osrf_pycommon.process_utils.execute_process`.
+:param bool stderr_to_stdout: if True, stderr is directed to stdout, so they
+    are not captured separately.
+"""
+
 
 class AsyncSubprocessProtocol(asyncio.SubprocessProtocol):
     """
@@ -59,7 +170,7 @@ class AsyncSubprocessProtocol(asyncio.SubprocessProtocol):
     stdout and stderr and does nothing when the process exits.
 
     Data received by the ``on_stdout_received`` and ``on_stderr_received``
-    functions is always in bytes (str in Python2 and bytes in Python3).
+    functions is always in bytes (``str`` in Python2 and ``bytes`` in Python3).
     Therefore, it may be necessary to call ``.decode()`` on the data before
     printing to the screen.
 
