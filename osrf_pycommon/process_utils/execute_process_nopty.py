@@ -23,21 +23,24 @@ from subprocess import STDOUT
 _is_linux = sys.platform.lower().startswith('linux')
 
 
-def _process_incoming_lines(incoming, left_over, linesep):
+def _process_incoming_lines(incoming, left_over):
     # This function takes the new data, the left over data from last time
-    # and returns a list of complete lines (separated by linesep) as well as
-    # any linesep trailing data for the next iteration
-    lines = (left_over + incoming).splitlines(True)  # Keep line endings
+    # and returns a list of complete lines (separated by sep) as well as
+    # any sep trailing data for the next iteration
+    # This function takes and returns bytes only (str in Python2)
+    combined = (left_over + incoming)
+    lines = combined.splitlines(True)
     if not lines:
         return None, left_over
-    linesep = linesep.encode('utf-8')
-    if lines[-1].endswith(linesep):
+    # Use splitlines because it is magic
+    # comparing against os.linesep is not sufficient
+    if lines[-1].splitlines() != [lines[-1]]:
         data = b''.join(lines)
         left_over = b''
     else:
         data = b''.join(lines[:-1])
         left_over = lines[-1]
-    return data.decode('utf-8'), left_over
+    return data, left_over
 
 
 def _close_fds(fds_to_close):
@@ -91,8 +94,7 @@ def _yield_data(p, fds, left_overs, linesep, fds_to_close=None):
                     if left_over:
                         yield yield_to_stream(left_over, stream)
                     continue
-                data, left_over = _process_incoming_lines(incoming, left_over,
-                                                          linesep)
+                data, left_over = _process_incoming_lines(incoming, left_over)
                 left_overs[stream] = left_over
                 yield yield_to_stream(data, stream)
         # Done

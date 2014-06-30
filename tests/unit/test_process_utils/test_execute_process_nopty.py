@@ -22,23 +22,23 @@ class TestProcessUtilsExecuteNoPty(unittest.TestCase):
         # Test with no left overs and no new incoming
         left_overs = b''
         incoming = b''
-        self.assertEqual((None, left_overs), pil(incoming, left_overs, nl))
+        self.assertEqual((None, left_overs), pil(incoming, left_overs))
 
         # Test with left overs, but no new incoming
         left_overs = b'something'
         incoming = b''
-        self.assertEqual(('', left_overs), pil(incoming, left_overs, nl))
+        self.assertEqual(('', left_overs), pil(incoming, left_overs))
 
         # Test with no left overs, but new incoming
         left_overs = b''
         incoming = nl.join(['one', 'two']).encode('utf-8')
-        self.assertEqual(('one' + nl, b'two'), pil(incoming, left_overs, nl))
+        self.assertEqual(('one' + nl, b'two'), pil(incoming, left_overs))
 
         # Test with left overs and new incoming with prefixed nl
         left_overs = b'something'
         incoming = (nl + 'else').encode('utf-8')
         expected = ('something' + nl, b'else')
-        self.assertEqual(expected, pil(incoming, left_overs, nl))
+        self.assertEqual(expected, pil(incoming, left_overs))
 
     def test__execute_process_nopty_combined_unbuffered(self):
         exc_nopty = execute_process_nopty._execute_process_nopty
