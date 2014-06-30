@@ -14,7 +14,6 @@
 
 import os
 import pty
-import sys
 import time
 
 from subprocess import Popen
