@@ -20,20 +20,20 @@ try:
     # If Python is >= 3.4 asyncio is included
     # If Python is == 3.3 asyncio can be installed via pip
     from .async_execute_process_asyncio import async_execute_process
-    from .async_execute_process_asyncio import loop
+    from .async_execute_process_asyncio import get_loop
     from .async_execute_process_asyncio import asyncio
 except (ImportError, SyntaxError):
     # If Python is < 3.3 then a SyntaxError will occur with asyncio
     # If Python is 3.3 and asyncio is not installed an ImportError occurs
     # In both cases, we must try to use trollius
     from .async_execute_process_trollius import async_execute_process
-    from .async_execute_process_trollius import loop
+    from .async_execute_process_trollius import get_loop
     from .async_execute_process_trollius import asyncio
 
 __all__ = [
     'async_execute_process',
     'AsyncSubprocessProtocol',
-    'loop',
+    'get_loop',
 ]
 
 async_execute_process.__doc__ = """
@@ -243,10 +243,12 @@ class AsyncSubprocessProtocol(asyncio.SubprocessProtocol):
         if not isinstance(stdout, int):
             stdout = 1
         if fd == stdout:
-            self.on_stdout_received(data)
+            if hasattr(self, 'on_stdout_received'):
+                self.on_stdout_received(data)
         else:
             assert fd == 2
-            self.on_stderr_received(data)
+            if hasattr(self, 'on_stderr_received'):
+                self.on_stderr_received(data)
 
     def _on_stdout_received(self, data):
         # print(data.__repr__())
