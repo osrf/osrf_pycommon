@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import errno
 import os
 import select
 import sys
@@ -69,7 +70,13 @@ def _yield_data(p, fds, left_overs, linesep, fds_to_close=None):
 
     try:
         while p.poll() is None:
-            rlist, wlist, xlist = select.select(fds, [], [])
+            try:
+                rlist, wlist, xlist = select.select(fds, [], [])
+            except select.error as exc:
+                # Ignore EINTR
+                if exc[0] == errno.EINTR:
+                    continue
+                raise
             for stream in rlist:
                 left_over = left_overs[stream]
                 fileno = getattr(stream, 'fileno', lambda: stream)()
