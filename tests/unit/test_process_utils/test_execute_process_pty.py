@@ -2,8 +2,6 @@ import os
 import sys
 import unittest
 
-from osrf_pycommon.process_utils import execute_process_pty
-
 this_dir = os.path.dirname(os.path.abspath(__file__))
 
 test_script = os.path.join(
@@ -19,8 +17,10 @@ def convert_file_linesep_with_pty_linesep(string):
 """, "\r\n")
 
 
+@unittest.skipIf(sys.platform.startswith("win"), "Windows not supported")
 class TestProcessUtilsExecuteNoPty(unittest.TestCase):
     def test__execute_process_pty_combined_unbuffered(self):
+        from osrf_pycommon.process_utils import execute_process_pty
         exc_pty = execute_process_pty._execute_process_pty
 
         # Test ordering with stdout and stderr combined and Python unbuffered
@@ -41,6 +41,7 @@ out 2
         self.assertEqual(expected, result)
 
     def test__execute_process_pty_unbuffered(self):
+        from osrf_pycommon.process_utils import execute_process_pty
         exc_pty = execute_process_pty._execute_process_pty
 
         # Test ordering with stdout and stderr combined and Python unbuffered
@@ -61,6 +62,7 @@ out 2
         self.assertEqual(expected, result)
 
     def test__execute_process_pty_combined(self):
+        from osrf_pycommon.process_utils import execute_process_pty
         exc_pty = execute_process_pty._execute_process_pty
 
         # Test ordering with stdout and stderr combined
@@ -81,6 +83,7 @@ out 2
         self.assertEqual(expected, result)
 
     def test__execute_process_pty(self):
+        from osrf_pycommon.process_utils import execute_process_pty
         exc_pty = execute_process_pty._execute_process_pty
 
         # Test ordering with stdout and stderr separate

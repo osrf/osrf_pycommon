@@ -1,9 +1,10 @@
 from osrf_pycommon.process_utils import asyncio
 from osrf_pycommon.process_utils import async_execute_process
+from osrf_pycommon.process_utils import get_loop
 
 from .impl_aep_protocol import create_protocol
 
-loop = asyncio.get_event_loop()
+loop = get_loop()
 
 
 @asyncio.coroutine

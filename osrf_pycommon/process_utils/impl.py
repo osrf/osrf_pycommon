@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import os
+import sys
 
 from .execute_process_nopty import _execute_process_nopty
 try:
@@ -199,59 +200,78 @@ def execute_process_split(
         exp_func = _execute_process_pty
     return exp_func(cmd, cwd, env, shell, stderr_to_stdout=True)
 
+try:
+    from shutil import which as _which
+except ImportError:
+    _which = None
 
-def which(program, paths=None):
-    """Custom version of the ``which`` built-in shell command.
 
-    Searches the paths in the ``PATH`` environment variable for a given
-    executable name. It returns the full path to the first instance of the
-    executable found or None if it was not found.
-    Only files in the paths marked as executable are considered.
+def _which_backport(cmd, mode=os.F_OK | os.X_OK, path=None):
+    # Check that a given file can be accessed with the correct mode.
+    # Additionally check that `file` is not a directory, as on Windows
+    # directories pass the os.access check.
+    def _access_check(fn, mode):
+        return (os.path.exists(fn) and os.access(fn, mode)
+                and not os.path.isdir(fn))
 
-    If an absolute path is given and the path exists and is executable, it is
-    returned as passed, otherwise None is returned. Either way no searching is
-    done.
-
-    If a relative path is given then a :py:exc:`ValueError` is raised.
-
-    :param str program: name of the executable to find
-    :param paths: If a list of strings given, use that instead of paths in
-        PATH, default is None. Given strings must be absolute, or a
-        :py:exc:`ValueError` is raised.
-    :type paths: list or None
-    :returns: Full path to the first instance of the executable, or None
-    :rtype: str or None
-    :raises: :py:exc:`ValueError` if a relative path or any non-string is given
-    """
-    def is_exe(fpath):
-        return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
-
-    if not isinstance(program, _basestring):
-        raise ValueError("Parameter 'program' is not a string: '{0}'"
-                         .format(program))
-
-    if os.path.isabs(program):
-        if is_exe(program):
-            return program
+    # If we're given a path with a directory part, look it up directly rather
+    # than referring to PATH directories. This includes checking relative to the
+    # current directory, e.g. ./script
+    if os.path.dirname(cmd):
+        if _access_check(cmd, mode):
+            return cmd
         return None
-    else:
-        head, tail = os.path.split(program)
-        if head and tail:
-            raise ValueError("Relative path given: '{0}'".format(program))
 
-        if paths is None:
-            paths = os.environ.get('PATH', os.defpath).split(os.pathsep)
+    if path is None:
+        path = os.environ.get("PATH", os.defpath)
+    if not path:
+        return None
+    path = path.split(os.pathsep)
+
+    if sys.platform == "win32":
+        # The current directory takes precedence on Windows.
+        if os.curdir not in path:
+            path.insert(0, os.curdir)
+
+        # PATHEXT is necessary to check on Windows.
+        pathext = os.environ.get("PATHEXT", "").split(os.pathsep)
+        # See if the given file matches any of the expected path extensions.
+        # This will allow us to short circuit when given "python.exe".
+        # If it does match, only test that one, otherwise we have to try
+        # others.
+        if any(cmd.lower().endswith(ext.lower()) for ext in pathext):
+            files = [cmd]
         else:
-            if not isinstance(paths, (list, tuple)):
-                raise ValueError("Parameter 'paths' is not a list: '{0}'"
-                                 .format(paths))
-            for path in paths:
-                if not os.path.isabs(path):
-                    raise ValueError("Non absolute path given: '{0}'"
-                                     .format(path))
-        for path in paths:
-            path = path.strip('"')
-            exe_file = os.path.join(path, program)
-            if is_exe(exe_file):
-                return exe_file
+            files = [cmd + ext for ext in pathext]
+    else:
+        # On other platforms you don't have things like PATHEXT to tell you
+        # what file suffixes are executable, so just pass on cmd as-is.
+        files = [cmd]
+
+    seen = set()
+    for directory in path:
+        normdir = os.path.normcase(directory)
+        if normdir not in seen:
+            seen.add(normdir)
+            for thefile in files:
+                name = os.path.join(directory, thefile)
+                if _access_check(name, mode):
+                    return name
     return None
+
+
+def which(*args, **kwargs):
+    """Given a command, mode, and a PATH string, return the path which
+    conforms to the given mode on the PATH, or None if there is no such
+    file.
+
+    `mode` defaults to os.F_OK | os.X_OK. `path` defaults to the result
+    of os.environ.get("PATH"), or can be overridden with a custom search
+    path.
+
+    Backported from :py:func:`shutil.which`, available in Python 3.3.
+    """
+    global _which
+    if _which is not None:
+        return _which(*args, **kwargs)
+    return _which_backport(*args, **kwargs)

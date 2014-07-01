@@ -5,9 +5,11 @@ import unittest
 try:
     from .impl_aep_asyncio import run
     from .impl_aep_asyncio import loop
+    print("Using asyncio")
 except (ImportError, SyntaxError):
     from .impl_aep_trollius import run
     from .impl_aep_trollius import loop
+    print("Using Trollius")
 
 this_dir = os.path.dirname(os.path.abspath(__file__))
 

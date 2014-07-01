@@ -26,6 +26,10 @@ Because this coroutine is built on the ``trollius``/``asyncio`` framework's subp
 .. autoclass:: osrf_pycommon.process_utils.AsyncSubprocessProtocol
     :members:
 
+In addtion to these functions, there is a utility function for getting the correct ``asyncio`` event loop:
+
+.. autofunction:: osrf_pycommon.process_utils.get_loop
+
 Synchronous Process Utilities
 -----------------------------
 

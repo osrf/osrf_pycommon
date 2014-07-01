@@ -13,49 +13,39 @@ class TestProcessUtilsImpl(unittest.TestCase):
         which = impl.which
         j = os.path.join
         prefix = j(this_dir, 'fixtures', 'impl_which')
-        paths = [
+        paths = os.pathsep.join([
             j(prefix, 'usr', 'local', 'bin'),
             j(prefix, 'usr', 'bin'),
             j(prefix, 'bin'),
-        ]
+        ])
         # bin_only exists +x in bin only
-        expected = j(prefix, 'bin', 'bin_only')
-        self.assertEqual(expected, which('bin_only', paths))
-        self.assertEqual(expected, which(expected, paths))
+        expected = j(prefix, 'bin', 'bin_only.exe')
+        self.assertEqual(expected, which('bin_only.exe', path=paths))
+        self.assertEqual(expected, which(expected, path=paths))
         # exc1 exists +x in bin and usr/bin
-        expected = j(prefix, 'usr', 'bin', 'exc1')
-        self.assertEqual(expected, which('exc1', paths))
-        self.assertEqual(expected, which(expected, paths))
+        expected = j(prefix, 'usr', 'bin', 'exc1.exe')
+        self.assertEqual(expected, which('exc1.exe', path=paths))
+        self.assertEqual(expected, which(expected, path=paths))
         # exc2 exists +x in bin and usr/bin, but -x in usr/local/bin
-        expected = j(prefix, 'usr', 'bin', 'exc2')
-        self.assertEqual(expected, which('exc2', paths))
-        self.assertEqual(expected, which(expected, paths))
+        expected = j(prefix, 'usr', 'bin', 'exc2.exe')
+        self.assertEqual(expected, which('exc2.exe', path=paths))
+        self.assertEqual(expected, which(expected, path=paths))
         # Same as above, with PATH
         orig_path = os.environ['PATH']
         try:
-            os.environ['PATH'] = os.pathsep.join(paths)
+            os.environ['PATH'] = paths
             # bin_only exists +x in bin only
-            expected = j(prefix, 'bin', 'bin_only')
-            self.assertEqual(expected, which('bin_only'))
+            expected = j(prefix, 'bin', 'bin_only.exe')
+            self.assertEqual(expected, which('bin_only.exe'))
             self.assertEqual(expected, which(expected))
             # exc1 exists +x in bin and usr/bin
-            expected = j(prefix, 'usr', 'bin', 'exc1')
-            self.assertEqual(expected, which('exc1'))
+            expected = j(prefix, 'usr', 'bin', 'exc1.exe')
+            self.assertEqual(expected, which('exc1.exe'))
             self.assertEqual(expected, which(expected))
             # exc2 exists +x in bin and usr/bin, but -x in usr/local/bin
-            expected = j(prefix, 'usr', 'bin', 'exc2')
-            self.assertEqual(expected, which('exc2'))
+            expected = j(prefix, 'usr', 'bin', 'exc2.exe')
+            self.assertEqual(expected, which('exc2.exe'))
             self.assertEqual(expected, which(expected))
         finally:
             os.environ['PATH'] = orig_path
-        # Test error cases
-        with self.assertRaisesRegexp(ValueError, "is not a string"):
-            which(1, paths)
-        which(str("exc1"), paths)  # Make sure unicode/str works
-        with self.assertRaisesRegexp(ValueError, "Relative path given"):
-            which(j("path", "program"), paths)
-        with self.assertRaisesRegexp(ValueError, "is not a list"):
-            which("dosentmatter", 'not a list')
-        which("doesntmatter", ('/make/sure', '/tuples/are/ok'))
-        with self.assertRaisesRegexp(ValueError, "Non absolute path"):
-            which("dosentmatter", ['relative/path'])
+        which(str("exc1.exe"), path=paths)  # Make sure unicode/str works

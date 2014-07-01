@@ -266,3 +266,10 @@ class AsyncSubprocessProtocol(asyncio.SubprocessProtocol):
     def on_process_exited(self, returncode):
         # print("Exited with", returncode)
         pass
+
+get_loop.__doc__ = """\
+This function will return the proper event loop for the subprocess async calls.
+
+On Unix this just returns :py:func:`asyncio.get_event_loop`, but on Windows it
+will set and return a :py:class:`asyncio.ProactorEventLoop` instead.
+"""

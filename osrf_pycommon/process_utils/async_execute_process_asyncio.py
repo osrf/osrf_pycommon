@@ -21,11 +21,11 @@ try:
 except ImportError:
     has_pty = False
 
-if os.name == 'nt':
-    loop = asyncio.ProactorEventLoop()
-    asyncio.set_event_loop(loop)
-else:
-    loop = asyncio.get_event_loop()
+from .get_loop_impl import get_loop_impl
+
+
+def get_loop():
+    return get_loop_impl(asyncio)
 
 
 @asyncio.coroutine
@@ -33,6 +33,7 @@ def _async_execute_process_nopty(
     protocol_class, cmd, cwd, env, shell,
     stderr_to_stdout=True
 ):
+    loop = get_loop()
     stderr = asyncio.subprocess.PIPE
     if stderr_to_stdout is True:
         stderr = asyncio.subprocess.STDOUT
@@ -55,6 +56,7 @@ if has_pty:
         protocol_class, cmd, cwd, env, shell,
         stderr_to_stdout=True
     ):
+        loop = get_loop()
         # Create the PTY's
         stdout_master, stdout_slave = pty.openpty()
         if stderr_to_stdout:
