@@ -269,7 +269,9 @@ def which(*args, **kwargs):
     of os.environ.get("PATH"), or can be overridden with a custom search
     path.
 
-    Backported from :py:func:`shutil.which`, available in Python 3.3.
+    Backported from :py:func:`shutil.which`
+    (`<https://docs.python.org/3.3/library/shutil.html#shutil.which>`_),
+    available in Python 3.3.
     """
     global _which
     if _which is not None:
