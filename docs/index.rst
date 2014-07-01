@@ -13,6 +13,7 @@ Contents:
 .. toctree::
     :maxdepth: 2
 
+    process_utils
     terminal_color
     terminal_utils
 
