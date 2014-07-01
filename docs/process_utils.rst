@@ -3,7 +3,11 @@ The ``process_utils`` Module
 
 This module provides functions for doing process management.
 
-There are three main sections of this module, asynchronous functions, synchronous functions, and utilities.
+These are the main sections of this module:
+
+- `Asynchronous Process Utilities`_
+- `Synchronous Process Utilities`_
+- `Utility Functions`_
 
 Asynchronous Process Utilities
 ------------------------------
