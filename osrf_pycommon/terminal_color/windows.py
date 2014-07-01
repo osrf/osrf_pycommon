@@ -53,6 +53,7 @@
 from __future__ import print_function
 
 import ctypes
+import ctypes.wintypes
 import os
 import sys
 
