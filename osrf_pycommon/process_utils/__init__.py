@@ -14,8 +14,7 @@
 
 """This module provides functions for doing process management.
 
-For example, this module provides a python implementation of ``which()`` and
-a function for executing a subprocess with ``tty`` emulation.
+The documentation for this module has a custom layout in process_utils.rst.
 """
 
 from .async_execute_process import async_execute_process
