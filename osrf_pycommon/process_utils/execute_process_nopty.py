@@ -22,6 +22,7 @@ from subprocess import Popen
 from subprocess import STDOUT
 
 _is_linux = sys.platform.lower().startswith('linux')
+_is_windows = sys.platform.lower().startswith('win')
 
 
 def _process_incoming_lines(incoming, left_over):
@@ -70,6 +71,17 @@ def _yield_data(p, fds, left_overs, linesep, fds_to_close=None):
 
     try:
         while p.poll() is None:
+            # If Windows
+            if _is_windows:
+                for stream in fds:
+                    # This will not produce the best results, but at least
+                    # it will function on Windows. A True IOCP implementation
+                    # would be required to get streaming from Windows streams.
+                    data = stream.readline()
+                    if data:
+                        yield yield_to_stream(data, stream)
+                continue
+            # Otherwise Unix
             try:
                 rlist, wlist, xlist = select.select(fds, [], [])
             except select.error as exc:
