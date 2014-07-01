@@ -3,8 +3,8 @@ python:
   - "2.7"
   - "3.3"
 install:
-  - pip install argparse catkin-pkg distribute PyYAML
-  - pip install nose coverage flake8 mock
+  - pip install trollius
+  - pip install nose flake8 mock
 script:
   - python setup.py nosetests -s
 notifications:
