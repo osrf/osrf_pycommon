@@ -260,20 +260,21 @@ def _which_backport(cmd, mode=os.F_OK | os.X_OK, path=None):
     return None
 
 
-def which(*args, **kwargs):
+def which(cmd, mode=os.F_OK | os.X_OK, path=None, **kwargs):
     """Given a command, mode, and a PATH string, return the path which
     conforms to the given mode on the PATH, or None if there is no such
     file.
 
-    `mode` defaults to os.F_OK | os.X_OK. `path` defaults to the result
-    of os.environ.get("PATH"), or can be overridden with a custom search
+    `mode` defaults to ``os.F_OK | os.X_OK``. `path` defaults to the result
+    of ``os.environ.get("PATH")``, or can be overridden with a custom search
     path.
 
     Backported from :py:func:`shutil.which`
     (`<https://docs.python.org/3.3/library/shutil.html#shutil.which>`_),
     available in Python 3.3.
     """
+    kwargs.update({'mode': mode, 'path': path})
     global _which
     if _which is not None:
-        return _which(*args, **kwargs)
-    return _which_backport(*args, **kwargs)
+        return _which(cmd, **kwargs)
+    return _which_backport(cmd, **kwargs)
