@@ -86,7 +86,11 @@ def _yield_data(p, fds, left_overs, linesep, fds_to_close=None):
                 rlist, wlist, xlist = select.select(fds, [], [])
             except select.error as exc:
                 # Ignore EINTR
-                if exc[0] == errno.EINTR:
+                try:
+                    errnum = exc.errno
+                except AttributeError:
+                    errnum = exc[0]
+                if errnum == errno.EINTR:
                     continue
                 raise
             for stream in rlist:

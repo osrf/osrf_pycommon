@@ -13,8 +13,8 @@ python = sys.executable
 
 
 def convert_file_linesep_with_pty_linesep(string):
-    return string.replace("""
-""", "\r\n")
+    return string.replace(b"""
+""", b"\r\n")
 
 
 @unittest.skipIf(sys.platform.startswith("win"), "Windows not supported")
@@ -25,7 +25,7 @@ class TestProcessUtilsExecuteNoPty(unittest.TestCase):
 
         # Test ordering with stdout and stderr combined and Python unbuffered
         cmd = [python, "-u", test_script]
-        result = ""
+        result = b""
         for out, err, ret in exc_pty(cmd, None, None, False, True):
             if out is not None:
                 result += out
@@ -33,7 +33,7 @@ class TestProcessUtilsExecuteNoPty(unittest.TestCase):
                 result += err
             if ret is not None:
                 break
-        expected = convert_file_linesep_with_pty_linesep("""\
+        expected = convert_file_linesep_with_pty_linesep(b"""\
 out 1
 err 1
 out 2
@@ -46,7 +46,7 @@ out 2
 
         # Test ordering with stdout and stderr combined and Python unbuffered
         cmd = [python, "-u", test_script]
-        result = ""
+        result = b""
         for out, err, ret in exc_pty(cmd, None, None, False, False):
             if out is not None:
                 result += out
@@ -54,7 +54,7 @@ out 2
                 result += err
             if ret is not None:
                 break
-        expected = convert_file_linesep_with_pty_linesep("""\
+        expected = convert_file_linesep_with_pty_linesep(b"""\
 out 1
 err 1
 out 2
@@ -67,7 +67,7 @@ out 2
 
         # Test ordering with stdout and stderr combined
         cmd = [python, test_script]
-        result = ""
+        result = b""
         for out, err, ret in exc_pty(cmd, None, None, False, True):
             if out is not None:
                 result += out
@@ -75,7 +75,7 @@ out 2
                 result += err
             if ret is not None:
                 break
-        expected = convert_file_linesep_with_pty_linesep("""\
+        expected = convert_file_linesep_with_pty_linesep(b"""\
 out 1
 err 1
 out 2
@@ -88,7 +88,7 @@ out 2
 
         # Test ordering with stdout and stderr separate
         cmd = [python, test_script]
-        result = ""
+        result = b""
         for out, err, ret in exc_pty(cmd, None, None, False, False):
             if out is not None:
                 result += out
@@ -96,7 +96,7 @@ out 2
                 result += err
             if ret is not None:
                 break
-        expected = convert_file_linesep_with_pty_linesep("""\
+        expected = convert_file_linesep_with_pty_linesep(b"""\
 out 1
 err 1
 out 2
