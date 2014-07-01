@@ -37,8 +37,10 @@ class TestTerminalColorImpl(unittest.TestCase):
         enable = impl.enable_ansi_color_substitution_globally
         disable = impl.disable_ansi_color_substitution_globally
         is_windows = impl._is_windows
+        enabled = impl._enabled
         try:
             impl._is_windows = False
+            impl._enabled = True
             enable()
             self.assertEqual('\x1b[0m', impl.ansi('reset'))
             self.assertEqual('\x1b[0m', impl.format_color('@|'))
@@ -50,12 +52,18 @@ class TestTerminalColorImpl(unittest.TestCase):
             self.assertEqual('\x1b[0m', impl.format_color('@|'))
         finally:
             impl._is_windows = is_windows
+            impl._enabled = enabled
 
     def test_format_color(self):
-        format_color = impl.format_color
-        self.assertEqual(self.test_str, format_color(self.test_format_str))
-        sanitized_str = "|@@ Notice @{atbar}"
-        self.assertEqual("|@ Notice @|", format_color(sanitized_str))
+        is_windows = impl._is_windows
+        try:
+            impl._is_windows = False
+            format_color = impl.format_color
+            self.assertEqual(self.test_str, format_color(self.test_format_str))
+            sanitized_str = "|@@ Notice @{atbar}"
+            self.assertEqual("|@ Notice @|", format_color(sanitized_str))
+        finally:
+            impl._is_windows = is_windows
 
     def test_sanitize(self):
         sanitize = impl.sanitize
