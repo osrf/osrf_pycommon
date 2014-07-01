@@ -215,8 +215,8 @@ def _which_backport(cmd, mode=os.F_OK | os.X_OK, path=None):
                 and not os.path.isdir(fn))
 
     # If we're given a path with a directory part, look it up directly rather
-    # than referring to PATH directories. This includes checking relative to the
-    # current directory, e.g. ./script
+    # than referring to PATH directories. This includes checking relative
+    # to the current directory, e.g. ./script
     if os.path.dirname(cmd):
         if _access_check(cmd, mode):
             return cmd
