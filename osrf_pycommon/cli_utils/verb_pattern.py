@@ -34,15 +34,23 @@ def call_prepare_arguments(func, parser, sysargs=None):
     :returns: return value of function or the parser if the function
         returns None.
     :rtype: :py:class:`argparse.ArgumentParser`
+    :raises: ValueError if a function with the wrong number of parameters
+        is given
     """
     func_args = [parser]
     # If the provided function takes two arguments and args were given
     # also give the args to the function
     arguments = inspect.getargspec(func)[0]
-    limit = 2
     if arguments[0] == 'self':
-        limit = 3
-    if len(arguments) == limit:
+        del arguments[0]
+    if len(arguments) not in [1, 2]:
+        raise ValueError("Given function '{0}' must have one or two "
+                         "parameters (excluding self), but got '{1}' "
+                         "parameters: '{2}'"
+                         .format(func.__name__,
+                                 len(arguments),
+                                 ', '.join(inspect.getargspec(func)[0])))
+    if len(arguments) == 2:
         func_args.append(sysargs or [])
     return func(*func_args) or parser
 
@@ -140,8 +148,8 @@ def load_verb_description(verb_name, group):
 def split_arguments_by_verb(arguments):
     """Split arguments by verb.
 
-    Given a list of arguments (list of strings), the pre verb arguments,
-    the verb, and the post verb arugments are returned.
+    Given a list of arguments (list of strings), the verb, the pre verb
+    arguments, and the post verb arugments are returned.
 
     For example:
 
@@ -149,10 +157,10 @@ def split_arguments_by_verb(arguments):
 
         >>> args = ['--command-arg1', 'verb', '--verb-arg1', '--verb-arg2']
         >>> split_arguments_by_verb(args)
-        (['--command-arg1'], 'verb', ['--verb-arg1', '--verb-arg2'])
+        ('verb', ['--command-arg1'], ['--verb-arg1', '--verb-arg2'])
 
     :param list arguments: list of system arguments
-    :returns: pre verb args (list), the verb (str), and post verb args (list)
+    :returns: the verb (str), pre verb args (list), and post verb args (list)
     :rtype: tuple
     """
     verb = None
