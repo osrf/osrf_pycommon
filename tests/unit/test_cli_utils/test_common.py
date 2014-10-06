@@ -15,17 +15,41 @@ def test_extract_jobs_flags():
         '--jobs=8', '--jobs 8', '--jobs', '--load-average',
         '--load-average=8', '--load-average 8', '--jobs=8 -l9'
     ]
-    for mflag, result in zip(valid_mflags, results):
-        match = extract_jobs_flags(mflag)
-        assert match == result, "should match '{0}'".format(mflag)
+    leftover_results = [
+        '', ' ', '', '', '', '',
+        '', '', '', '', '',
+        '', '', '', '',
+        '', '', ''
+    ]
+    for mflag, result in zip(valid_mflags, zip(results, leftover_results)):
+        result, leftover_result = result
+        matches, leftovers = extract_jobs_flags(mflag)
         print('--')
         print("input:    '{0}'".format(mflag))
-        print("matched:  '{0}'".format(match))
+        print("matched:  '{0}'".format(matches))
         print("expected: '{0}'".format(result))
+        assert matches == result, "should match '{0}'".format(mflag)
+        assert leftovers == leftover_result, "expected leftovers '{0}': '{1}'"\
+            .format(leftovers)
     invalid_mflags = ['', '--jobs= 8', '--jobs8']
     for mflag in invalid_mflags:
-        match = extract_jobs_flags(mflag)
-        assert match is None, "should not match '{0}'".format(mflag)
+        matches, leftovers = extract_jobs_flags(mflag)
+        assert matches == '', "should not match '{0}'".format(mflag)
+        assert leftovers == mflag, "'{0}' should be in leftovers: '{1}'"\
+            .format(mflag, leftovers)
+    mixed_flags = [
+        'target -j8 -l8 --other-option'
+    ]
+    results = [
+        ('-j8 -l8', 'target --other-option')
+    ]
+    for args, result in zip(mixed_flags, results):
+        expected_matches, expected_leftovers = result
+        matches, leftovers = extract_jobs_flags(args)
+        assert matches == expected_matches, "should have matched '{0}'"\
+            .format(expected_matches)
+        assert leftovers == expected_leftovers, "should have left '{0}' '{1}'"\
+            .format(expected_leftovers, leftovers)
 
 
 def test_extract_argument_group():

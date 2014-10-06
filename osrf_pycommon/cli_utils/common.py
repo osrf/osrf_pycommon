@@ -20,20 +20,46 @@ import re
 def extract_jobs_flags(arguments):
     """Extracts make job flags from a list of other make flags, i.e. -j8 -l8
 
-    :param arguments: string of space separated arguments which may or may not
-        contain make job flags
-    :type arguments: str
-    :returns: list of make jobs flags as a space separated string
-    :rtype: str
+    The input arguments are given as a string separated by whitespace.
+    Make job flags are matched and removed from the arguments, and the Make
+    job flags and what is left over from the input arguments are returned.
+
+    If no job flags are encountered, then an empty string is returned as the
+    first element of the returned tuple.
+
+    Examples:
+
+    .. code-block:: python
+
+        >> extract_jobs_flags('-j8 -l8')
+        ('-j8 -l8', '')
+        >> extract_jobs_flags('-j8 ')
+        ('-j8', ' ')
+        >> extract_jobs_flags('target -j8 -l8 --some-option')
+        ('-j8 -l8', 'target --some-option')
+        >> extract_jobs_flags('target --some-option')
+        ('', 'target --some-option')
+
+    :param str arguments: string of space separated arguments which may or
+        may not contain make job flags
+    :returns: tuple of make jobs flags as a space separated string and
+        leftover arguments as a space separated string
+    :rtype: tuple
     """
     regex = (
         r'(?:^|\s)(-?(?:j|l)(?:\s*[0-9]+|\s|$))'
         r'|'
         r'(?:^|\s)((?:--)?(?:jobs|load-average)(?:(?:=|\s+)[0-9]+|(?:\s|$)))'
     )
-    matches = re.findall(regex, arguments) or []
-    matches = [m[0] or m[1] for m in matches]
-    return ' '.join([m.strip() for m in matches]) if matches else None
+    matches = []
+    leftover = ''
+    last_match_end = 0
+    for match in re.finditer(regex, arguments) or []:
+        matches.append(match.groups()[0] or match.groups()[1])
+        leftover += arguments[last_match_end:match.start()]
+        last_match_end = match.end()
+    leftover += arguments[last_match_end:]
+    return ' '.join([m.strip() for m in matches]), leftover
 
 
 def extract_argument_group(args, delimiting_option):
