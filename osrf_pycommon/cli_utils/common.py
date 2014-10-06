@@ -63,7 +63,7 @@ def extract_jobs_flags(arguments):
 
 
 def extract_argument_group(args, delimiting_option):
-    """Extract a group of arguments from a list of arguments using a delimeter.
+    """Extract a group of arguments from a list of arguments using a delimiter.
 
     Here is an example:
 
@@ -72,9 +72,9 @@ def extract_argument_group(args, delimiting_option):
         >>> extract_argument_group(['foo', '--args', 'bar', '--baz'], '--args')
         (['foo'], ['bar', '--baz'])
 
-    The group can always be endded using the double hyphen ``--``.
+    The group can always be ended using the double hyphen ``--``.
     In order to pass a double hyphen as arguments, use three hyphens ``---``.
-    Any set of hypens encountered after the delimeter, and up to ``--``, which
+    Any set of hyphens encountered after the delimiter, and up to ``--``, which
     have three or more hyphens and are isolated, will be captured and reduced
     by one hyphen.
 
@@ -90,7 +90,7 @@ def extract_argument_group(args, delimiting_option):
     In the result the ``--`` comes from the ``---`` in the input.
     The ``--args`` and the corresponding ``--`` are removed entirely.
 
-    The delimeter and ``--`` terminator combination can also happen multiple
+    The delimiter and ``--`` terminator combination can also happen multiple
     times, in which case the bodies of arguments are combined and returned in
     the order they appeared.
 
@@ -110,7 +110,7 @@ def extract_argument_group(args, delimiting_option):
 
     :param list args: list of strings which are ordered arguments.
     :param str delimiting_option: option which denotes where to split the args.
-    :returns: tuple of arguments before and after the delimeter.
+    :returns: tuple of arguments before and after the delimiter.
     :rtype: tuple
     :raises: ValueError if the delimiting_option is ``--``.
     """
