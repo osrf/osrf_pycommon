@@ -3,6 +3,12 @@ The ``cli_utils`` Module
 
 This module provides functions and patterns for creating Command Line Interface (CLI) tools.
 
+Common CLI Functions
+--------------------
+
+.. automodule:: osrf_pycommon.cli_utils.common
+    :members:
+
 The Verb Pattern
 ----------------
 
