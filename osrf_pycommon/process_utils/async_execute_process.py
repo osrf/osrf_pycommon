@@ -61,7 +61,8 @@ Here is an example of how to use this function:
     import asyncio
     from osrf_pycommon.process_utils import async_execute_process
     from osrf_pycommon.process_utils import AsyncSubprocessProtocol
-    from osrf_pycommon.process_utils import loop
+    from osrf_pycommon.process_utils import get_loop()
+
 
     @asyncio.coroutine
     def setup():
@@ -70,7 +71,7 @@ Here is an example of how to use this function:
         returncode = yield from protocol.complete
         return returncode
 
-    retcode = loop.run_until_complete(setup())
+    retcode = get_loop().run_until_complete(setup())
 
 That same example using :py:mod:`trollius` would look like this:
 
@@ -79,7 +80,8 @@ That same example using :py:mod:`trollius` would look like this:
     import trollius as asyncio
     from osrf_pycommon.process_utils import async_execute_process
     from osrf_pycommon.process_utils import AsyncSubprocessProtocol
-    from osrf_pycommon.process_utils import loop
+    from osrf_pycommon.process_utils import get_loop()
+
 
     @asyncio.coroutine
     def setup():
@@ -88,7 +90,7 @@ That same example using :py:mod:`trollius` would look like this:
         returncode = yield asyncio.From(protocol.complete)
         raise asyncio.Return(returncode)
 
-    retcode = loop.run_until_complete(setup())
+    retcode = get_loop().run_until_complete(setup())
 
 This difference is required because in Python < 3.3 the ``yield from`` syntax
 is not valid.
