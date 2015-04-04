@@ -21,6 +21,7 @@ test_script = os.path.join(
     'fixtures',
     'execute_process',
     'stdout_stderr_ordering.py')
+test_script_quoted = '"%s"' % test_script if ' ' in test_script else test_script
 python = sys.executable
 
 
@@ -37,7 +38,7 @@ class TestProcessUtilsAsyncExecuteProcess(unittest.TestCase):
 
     def test_async_execute_process_no_emulation_shell_true_combined(self):
         stdout, stderr, retcode = loop.run_until_complete(run(
-            [python, test_script], shell=True))
+            [python, test_script_quoted], shell=True))
         stdout, stderr = stdout.decode(), stderr.decode()
         self.assertIn('out 1', stdout)
         self.assertIn('err 1', stdout)
@@ -56,7 +57,7 @@ class TestProcessUtilsAsyncExecuteProcess(unittest.TestCase):
 
     def test_async_execute_process_no_emulation_shell_true(self):
         stdout, stderr, retcode = loop.run_until_complete(run(
-            [python, test_script], stderr_to_stdout=False, shell=True))
+            [python, test_script_quoted], stderr_to_stdout=False, shell=True))
         stdout, stderr = stdout.decode(), stderr.decode()
         self.assertIn('out 1', stdout)
         self.assertIn('err 1', stderr)
@@ -75,7 +76,7 @@ class TestProcessUtilsAsyncExecuteProcess(unittest.TestCase):
 
     def test_async_execute_process_with_emulation_shell_true_combined(self):
         stdout, stderr, retcode = loop.run_until_complete(run(
-            [python, test_script], emulate_tty=True, shell=True))
+            [python, test_script_quoted], emulate_tty=True, shell=True))
         stdout, stderr = stdout.decode(), stderr.decode()
         self.assertIn('out 1', stdout)
         self.assertIn('err 1', stdout)
@@ -94,7 +95,7 @@ class TestProcessUtilsAsyncExecuteProcess(unittest.TestCase):
 
     def test_async_execute_process_with_emulation_shell_true(self):
         stdout, stderr, retcode = loop.run_until_complete(run(
-            [python, test_script], emulate_tty=True, stderr_to_stdout=False,
+            [python, test_script_quoted], emulate_tty=True, stderr_to_stdout=False,
             shell=True))
         stdout, stderr = stdout.decode(), stderr.decode()
         self.assertIn('out 1', stdout)
