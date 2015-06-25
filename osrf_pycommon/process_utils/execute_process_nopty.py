@@ -131,11 +131,11 @@ def _execute_process_nopty(cmd, cwd, env, shell, stderr_to_stdout=True):
     if stderr_to_stdout:
         p = Popen(cmd,
                   stdin=PIPE, stdout=PIPE, stderr=STDOUT,
-                  cwd=cwd, env=env, shell=shell)
+                  cwd=cwd, env=env, shell=shell, close_fds=False)
     else:
         p = Popen(cmd,
                   stdin=PIPE, stdout=PIPE, stderr=PIPE,
-                  cwd=cwd, env=env, shell=shell)
+                  cwd=cwd, env=env, shell=shell, close_fds=False)
 
     # Left over data from read which isn't a complete line yet
     left_overs = {p.stdout: b'', p.stderr: b''}

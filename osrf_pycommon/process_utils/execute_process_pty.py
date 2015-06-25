@@ -40,7 +40,7 @@ def _execute_process_pty(cmd, cwd, env, shell, stderr_to_stdout=True):
                 p = Popen(
                     cmd,
                     stdin=stdout_slave, stdout=stderr_slave, stderr=STDOUT,
-                    cwd=cwd, env=env, shell=shell)
+                    cwd=cwd, env=env, shell=shell, close_fds=False)
             except OSError as exc:
                 # This can happen if a file you are trying to execute is being
                 # written to simultaneously on Linux
