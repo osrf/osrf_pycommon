@@ -43,11 +43,11 @@ def _async_execute_process_nopty(
     if shell is True:
         transport, protocol = yield From(loop.subprocess_shell(
             protocol_class, " ".join(cmd), cwd=cwd, env=env,
-            stderr=stderr))
+            stderr=stderr, close_fds=False))
     else:
         transport, protocol = yield From(loop.subprocess_exec(
             protocol_class, *cmd, cwd=cwd, env=env,
-            stderr=stderr))
+            stderr=stderr, close_fds=False))
     raise Return(transport, protocol)
 
 
@@ -73,11 +73,11 @@ if has_pty:
         if shell is True:
             transport, protocol = yield From(loop.subprocess_shell(
                 protocol_factory, " ".join(cmd), cwd=cwd, env=env,
-                stdout=stdout_slave, stderr=stderr_slave))
+                stdout=stdout_slave, stderr=stderr_slave, close_fds=False))
         else:
             transport, protocol = yield From(loop.subprocess_exec(
                 protocol_factory, *cmd, cwd=cwd, env=env,
-                stdout=stdout_slave, stderr=stderr_slave))
+                stdout=stdout_slave, stderr=stderr_slave, close_fds=False))
 
         # Close our copies of the slaves,
         # the child's copy of the slave remain open until it terminates
