@@ -1,11 +1,14 @@
+import sys
+
 from setuptools import setup
 from setuptools import find_packages
 
 
 install_requires = [
     'setuptools',
-    'trollius',
 ]
+if sys.version_info < (3, 4):
+    install_requires.append('trollius')
 
 setup(
     name='osrf_pycommon',
