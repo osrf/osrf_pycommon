@@ -21,6 +21,9 @@ try:
     # If Python is < 3.3 then a SyntaxError will occur with asyncio
     # If Python is 3.3 and asyncio is not installed an ImportError occurs
     # In both cases, we must try to use trollius first
+    from .async_execute_process_trollius import TROLLIUS_FOUND
+    if not TROLLIUS_FOUND:
+        raise ImportError
     from .async_execute_process_trollius import async_execute_process
     from .async_execute_process_trollius import get_loop
     from .async_execute_process_trollius import asyncio
