@@ -1,5 +1,5 @@
 from osrf_pycommon.process_utils import asyncio
-from osrf_pycommon.process_utils import async_execute_process
+from osrf_pycommon.process_utils.async_execute_process import async_execute_process
 from osrf_pycommon.process_utils import get_loop
 
 from osrf_pycommon.process_utils.async_execute_process_trollius import From
