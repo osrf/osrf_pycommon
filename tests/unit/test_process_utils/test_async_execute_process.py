@@ -3,6 +3,9 @@ import sys
 import unittest
 
 try:
+    from .impl_aep_trollius import TROLLIUS_FOUND
+    if not TROLLIUS_FOUND:
+        raise ImportError
     from .impl_aep_trollius import run
     from .impl_aep_trollius import loop
     print("Using Trollius")
