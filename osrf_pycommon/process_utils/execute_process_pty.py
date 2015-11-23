@@ -13,7 +13,12 @@
 # limitations under the License.
 
 import os
-import pty
+try:
+    import pty
+except ImportError:
+    # to support --cover-inclusive on Windows
+    if os.name not in ['nt']:
+        raise
 import time
 
 from subprocess import Popen
