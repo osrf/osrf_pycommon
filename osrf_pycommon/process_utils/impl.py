@@ -198,7 +198,7 @@ def execute_process_split(
     exp_func = _execute_process_nopty
     if emulate_tty and _execute_process_pty is not None:
         exp_func = _execute_process_pty
-    return exp_func(cmd, cwd, env, shell, stderr_to_stdout=True)
+    return exp_func(cmd, cwd, env, shell, stderr_to_stdout=False)
 
 try:
     from shutil import which as _which
