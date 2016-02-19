@@ -43,6 +43,7 @@ def execute_process(cmd, cwd=None, env=None, shell=False, emulate_tty=False):
 
     .. code-block:: python
 
+        from __future__ import print_function
         from osrf_pycommon.process_utils import execute_process
 
         cmd = ['ls', '-G']
@@ -51,6 +52,9 @@ def execute_process(cmd, cwd=None, env=None, shell=False, emulate_tty=False):
                 # This is a return code, the command has exited
                 print("'{0}' exited with: {1}".format(' '.join(cmd), line))
                 continue  # break would also be appropriate here
+            # In Python 3, it will be a bytes array which needs to be decoded
+            if not isinstance(line, str):
+                line = line.decode('utf-8')
             # Then print it to the screen
             print(line, end='')
 
@@ -80,6 +84,7 @@ def execute_process(cmd, cwd=None, env=None, shell=False, emulate_tty=False):
 
     .. code-block:: python
 
+        from __future__ import print_function
         from osrf_pycommon.process_utils import execute_process
 
         cmd = ['ls', '-G', '/usr']
@@ -91,6 +96,9 @@ def execute_process(cmd, cwd=None, env=None, shell=False, emulate_tty=False):
             if isinstance(line, int):
                 print("'{0}' exited with: {1}".format(' '.join(cmd), line))
                 continue
+            # In Python 3, it will be a bytes array which needs to be decoded
+            if not isinstance(line, str):
+                line = line.decode('utf-8')
             print(line, end='')
 
     This way if a pty cannot be opened in order to emulate the tty then you
@@ -167,17 +175,22 @@ def execute_process_split(
 
     .. code-block:: python
 
+        from __future__ import print_function
         import sys
         from osrf_pycommon.process_utils import execute_process_split
 
-        cmd = ['ls', '-G']
+        cmd = ['time', 'ls', '-G']
         for out, err, ret in execute_process_split(cmd, cwd='/usr'):
+            # In Python 3, it will be a bytes array which needs to be decoded
+            out = out.decode('utf-8') if out is not None else None
+            err = err.decode('utf-8') if err is not None else None
             if ret is not None:
                 # This is a return code, the command has exited
                 print("'{0}' exited with: {1}".format(' '.join(cmd), ret))
-            elif out is not None:
+                break
+            if out is not None:
                 print(out, end='')
-            elif err is not None:
+            if err is not None:
                 print(err, end='', file=sys.stderr)
 
     When using this, it is possible that the ``stdout`` and ``stderr`` data can
