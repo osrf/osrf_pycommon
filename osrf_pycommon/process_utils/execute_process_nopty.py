@@ -52,10 +52,11 @@ def _close_fds(fds_to_close):
             continue
         try:
             os.close(s)
-        except OSError:
+        except OSError as exc:
             # This could raise "OSError: [Errno 9] Bad file descriptor"
             # If it has already been closed, but that's ok
-            pass
+            if "Bad file descriptor" not in "{0}".format(exc):
+                raise
 
 
 def _yield_data(p, fds, left_overs, linesep, fds_to_close=None):
