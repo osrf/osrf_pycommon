@@ -149,6 +149,7 @@ def execute_process(cmd, cwd=None, env=None, shell=False, emulate_tty=False):
     for out, err, ret in exp_func(cmd, cwd, env, shell, stderr_to_stdout=True):
         if ret is None:
             yield out
+            continue
         yield ret
 
 
