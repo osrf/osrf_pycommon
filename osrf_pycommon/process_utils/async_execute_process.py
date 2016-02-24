@@ -81,6 +81,8 @@ That same example using :py:mod:`trollius` would look like this:
 
 .. code-block:: python
 
+    # First import trollius_helper so it is available on Ubuntu with Python 2
+    import osrf_pycommon.vendor.trollius_helper  # noqa
     import trollius as asyncio
     from osrf_pycommon.process_utils import async_execute_process
     from osrf_pycommon.process_utils import AsyncSubprocessProtocol

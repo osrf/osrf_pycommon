@@ -16,6 +16,7 @@ import os
 
 # allow module to be importable for --cover-inclusive
 try:
+    import osrf_pycommon.vendor.trollius_helper  # noqa
     import trollius as asyncio
 except ImportError:
     TROLLIUS_FOUND = False
