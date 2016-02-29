@@ -23,7 +23,7 @@ setup(
     keywords=['osrf', 'utilities'],
     classifiers=[
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apache 2.0',
+        'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python',
     ],
     description="Commonly needed Python modules, "
