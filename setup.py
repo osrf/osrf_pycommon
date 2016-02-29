@@ -12,7 +12,7 @@ if sys.version_info < (3, 4):
 
 setup(
     name='osrf_pycommon',
-    version='0.0.0',
+    version='0.1.0',
     packages=find_packages(exclude=['tests', 'docs']),
     install_requires=install_requires,
     author='William Woodall',
