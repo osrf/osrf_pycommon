@@ -13,14 +13,11 @@
 # limitations under the License.
 
 import os
+import sys
 
-# allow module to be importable for --cover-inclusive
-try:
+# Conditionally import so that nosetest --with-coverge --cover-inclusive works.
+if sys.version_info < (3, 4):
     import trollius as asyncio
-except ImportError:
-    TROLLIUS_FOUND = False
-else:
-    TROLLIUS_FOUND = True
 
     from trollius import From
     from trollius import Return

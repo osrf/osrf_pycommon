@@ -1,21 +1,16 @@
+import atexit
 import os
 import sys
 import unittest
 
-try:
-    from .impl_aep_trollius import TROLLIUS_FOUND
-    if not TROLLIUS_FOUND:
-        raise ImportError
-    from .impl_aep_trollius import run
-    from .impl_aep_trollius import loop
-    print("Using Trollius")
-except ImportError as exc:
-    if 'PYTHONASYNCIODEBUG' in os.environ:
-        import traceback
-        traceback.print_exc()
+if sys.version_info >= (3, 4):
     from .impl_aep_asyncio import run
     from .impl_aep_asyncio import loop
     print("Using asyncio")
+else:
+    from .impl_aep_trollius import run
+    from .impl_aep_trollius import loop
+    print("Using Trollius")
 
 this_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -26,6 +21,13 @@ test_script = os.path.join(
     'stdout_stderr_ordering.py')
 test_script_quoted = '"%s"' % test_script if ' ' in test_script else test_script
 python = sys.executable
+
+
+# This atexit handler ensures the loop is closed after all tests were run.
+@atexit.register
+def close_loop():
+    if not loop.is_closed():
+        loop.close()
 
 
 class TestProcessUtilsAsyncExecuteProcess(unittest.TestCase):
