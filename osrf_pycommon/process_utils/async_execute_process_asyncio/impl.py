@@ -21,7 +21,7 @@ try:
 except ImportError:
     has_pty = False
 
-from .get_loop_impl import get_loop_impl
+from ..get_loop_impl import get_loop_impl
 
 
 def get_loop():
