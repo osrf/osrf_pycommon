@@ -16,7 +16,7 @@ import os
 import sys
 
 # Conditionally import so that nosetest --with-coverge --cover-inclusive works.
-if sys.version_info < (3, 4):
+if sys.version_info < (3, 4) or 'trollius' in sys.modules:
     import trollius as asyncio
 
     from trollius import From
