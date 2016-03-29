@@ -16,8 +16,9 @@ from __future__ import print_function
 
 import sys
 
-if sys.version_info >= (3, 4):
+if sys.version_info >= (3, 4) and 'trollius' not in sys.modules:
     # If using Python 3.4 or greater, asyncio is always available.
+    # However, if trollius has already been imported, use that.
     from .async_execute_process_asyncio import async_execute_process
     from .async_execute_process_asyncio import get_loop
     from .async_execute_process_asyncio import asyncio
