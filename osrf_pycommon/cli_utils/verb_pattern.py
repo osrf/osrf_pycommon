@@ -40,9 +40,11 @@ def call_prepare_arguments(func, parser, sysargs=None):
     func_args = [parser]
     # If the provided function takes two arguments and args were given
     # also give the args to the function
-    arguments = inspect.getargspec(func)[0]
+    arguments, _, _, defaults = inspect.getargspec(func)
     if arguments[0] == 'self':
         del arguments[0]
+    if defaults:
+        arguments = arguments[:-len(defaults)]
     if len(arguments) not in [1, 2]:
         raise ValueError("Given function '{0}' must have one or two "
                          "parameters (excluding self), but got '{1}' "
