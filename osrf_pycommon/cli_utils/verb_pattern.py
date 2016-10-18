@@ -14,8 +14,8 @@
 
 """API for implementing commands and verbs which used the verb pattern."""
 
-import pkg_resources
 import inspect
+import pkg_resources
 
 
 def call_prepare_arguments(func, parser, sysargs=None):
