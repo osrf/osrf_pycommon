@@ -13,16 +13,18 @@
 # limitations under the License.
 
 import os
+
 try:
     import pty
 except ImportError:
     # to support --cover-inclusive on Windows
     if os.name not in ['nt']:
         raise
-import time
 
 from subprocess import Popen
 from subprocess import STDOUT
+
+import time
 
 from .execute_process_nopty import _close_fds
 from .execute_process_nopty import _yield_data

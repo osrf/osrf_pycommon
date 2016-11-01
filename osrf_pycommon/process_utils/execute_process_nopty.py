@@ -15,11 +15,12 @@
 import errno
 import os
 import select
-import sys
 
 from subprocess import PIPE
 from subprocess import Popen
 from subprocess import STDOUT
+
+import sys
 
 _is_linux = sys.platform.lower().startswith('linux')
 _is_windows = sys.platform.lower().startswith('win')
