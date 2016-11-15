@@ -166,6 +166,7 @@ def _win_background(background, handle, attrs):
     SetConsoleTextAttribute(handle, attrs)
     return attrs
 
+
 _ansi_to_win32 = {
     '\x1b[0m': (_win_reset, ),          # reset
     '\x1b[1m': (_win_style, BRIGHT),    # boldon, see wincon.h
@@ -200,6 +201,7 @@ def _tokenize_ansi_string_for_win32(msg):
     tokens = filter(None, split_by_ansi_escape_sequence(msg, True))
     tokens = [_ansi_to_win32.get(t, t) for t in tokens]
     return tokens
+
 
 try:
     ctypes.winDLL
