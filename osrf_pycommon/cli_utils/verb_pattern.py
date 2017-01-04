@@ -15,6 +15,7 @@
 """API for implementing commands and verbs which used the verb pattern."""
 
 import inspect
+
 import pkg_resources
 
 
