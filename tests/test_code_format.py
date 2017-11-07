@@ -15,7 +15,7 @@ def test_flake8():
     except ImportError:
         pass
     # ignore error codes from plugins this package doesn't comply with
-    cmd.extend(['--ignore=C,D,Q'])
+    cmd.extend(['--ignore=C,D,Q,I'])
     # work around for https://gitlab.com/pycqa/flake8/issues/179
     cmd.extend(['--jobs', '1'])
     if sys.version_info < (3, 4):
