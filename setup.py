@@ -37,5 +37,5 @@ setup(
     description="Commonly needed Python modules, "
                 "used by Python software developed at OSRF",
     license='Apache 2.0',
-    test_suite='tests',
+    tests_require=['pytest'],
 )
