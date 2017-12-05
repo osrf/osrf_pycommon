@@ -27,7 +27,7 @@ def call_prepare_arguments(func, parser, sysargs=None):
     the current arguments being processed.
 
     :param func: Callable ``prepare_arguments`` function.
-    :type func: Callabe
+    :type func: Callable
     :param parser: parser which is always passed to the function
     :type parser: :py:class:`argparse.ArgumentParser`
     :param sysargs: arguments to optionally pass to the function, if needed
@@ -61,7 +61,7 @@ def call_prepare_arguments(func, parser, sysargs=None):
 def create_subparsers(parser, cmd_name, verbs, group, sysargs, title=None):
     """Creates argparse subparsers for each verb which can be discovered.
 
-    Using the ``verbs`` parameter, the availble verbs are iterated through.
+    Using the ``verbs`` parameter, the available verbs are iterated through.
     For each verb a subparser is created for it using the ``parser`` parameter.
     The ``cmd_name`` is used to fill the title and description of the
     ``add_subparsers`` function call.
@@ -117,7 +117,7 @@ def create_subparsers(parser, cmd_name, verbs, group, sysargs, title=None):
 
 
 def default_argument_preprocessor(args):
-    """Return unmodifed args and an empty dict for extras"""
+    """Return unmodified args and an empty dict for extras"""
     extras = {}
     return args, extras
 
@@ -152,7 +152,7 @@ def split_arguments_by_verb(arguments):
     """Split arguments by verb.
 
     Given a list of arguments (list of strings), the verb, the pre verb
-    arguments, and the post verb arugments are returned.
+    arguments, and the post verb arguments are returned.
 
     For example:
 
