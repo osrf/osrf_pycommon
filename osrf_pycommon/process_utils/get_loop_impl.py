@@ -29,7 +29,7 @@ def get_loop_impl(asyncio):
     else:
         try:
             loop = asyncio.get_event_loop()
-        except AssertionError:
+        except (RuntimeError, AssertionError):
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
     _thread_local.loop_has_been_setup = True
