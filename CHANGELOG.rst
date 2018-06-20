@@ -1,3 +1,8 @@
+0.1.5 (2018-06-19 21:00:00 -0800)
+---------------------------------
+- Fixed a try-catch statement to adapt to changes in asyncio's raise behavior in `asyncio.get_event_loop()`.
+- Small changes, mostly related to distribution.
+
 0.1.4 (2017-12-08 16:00:00 -0800)
 ---------------------------------
 - Only small test/linter fixes and documentation typos removed.
