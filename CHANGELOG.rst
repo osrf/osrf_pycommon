@@ -1,3 +1,7 @@
+0.1.6 (2018-11-15 12:45:00 -0800)
+---------------------------------
+- Changed package.xml to use python2 or python3 dependencies as appropriate. `#50 <https://github.com/osrf/osrf_pycommon/pull/50>`_
+
 0.1.5 (2018-06-19 21:00:00 -0800)
 ---------------------------------
 - Fixed a try-catch statement to adapt to changes in asyncio's raise behavior in `asyncio.get_event_loop()`.
