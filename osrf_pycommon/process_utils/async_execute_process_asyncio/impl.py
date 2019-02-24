@@ -65,7 +65,11 @@ if has_pty:
             stderr_master, stderr_slave = pty.openpty()
 
         def protocol_factory():
-            return protocol_class(None, stdout_master, stderr_master)
+            return protocol_class(
+                stdin=None,
+                stdout=stdout_master,
+                stderr=stderr_master
+            )
 
         # Start the subprocess
         if shell is True:
