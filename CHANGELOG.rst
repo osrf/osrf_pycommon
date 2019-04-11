@@ -1,3 +1,8 @@
+0.1.7 (2019-04-11 12:45:00 -0800)
+---------------------------------
+* Use keyword arguments only for protocol_class invocations (`#52 <https://github.com/osrf/osrf_pycommon/issues/52>`_)
+* Contributors: Daniel Stonier
+
 0.1.6 (2018-11-15 12:45:00 -0800)
 ---------------------------------
 - Changed package.xml to use python2 or python3 dependencies as appropriate. `#50 <https://github.com/osrf/osrf_pycommon/pull/50>`_
