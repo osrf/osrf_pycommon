@@ -122,7 +122,7 @@ def execute_process(cmd, cwd=None, env=None, shell=False, emulate_tty=False):
     If you want to ensure there is no color in the output from an executed
     process, then use this function:
 
-    :py:func:`osrf_pycommon.terminal_color.remove_ansi_escape_senquences`
+    :py:func:`osrf_pycommon.terminal_color.remove_ansi_escape_sequences`
 
     Exceptions can be raised by functions called by the implementation,
     for example, :py:class:`subprocess.Popen` can raise an :py:exc:`OSError`

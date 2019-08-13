@@ -146,7 +146,7 @@ which only contain ansi escape sequences.
 
 """
 
-from .ansi_re import remove_ansi_escape_senquences
+from .ansi_re import remove_ansi_escape_sequences
 from .ansi_re import split_by_ansi_escape_sequence
 
 from .impl import ansi
@@ -167,7 +167,7 @@ __all__ = [
     'get_ansi_dict',
     'print_ansi_color_win32',
     'print_color',
-    'remove_ansi_escape_senquences',
+    'remove_ansi_escape_sequences',
     'sanitize',
     'split_by_ansi_escape_sequence',
     'test_colors',
