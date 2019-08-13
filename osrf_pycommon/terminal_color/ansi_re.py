@@ -44,3 +44,7 @@ def remove_ansi_escape_sequences(string):
     """
     global _ansi_re
     return _ansi_re.sub('', string)
+
+
+# Backwards compatibility
+remove_ansi_escape_senquences = remove_ansi_escape_sequences
