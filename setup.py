@@ -18,10 +18,15 @@ if sys.version_info < (3, ):
     )
 packages = find_packages(exclude=package_excludes)
 
+package_name = 'osrf_pycommon'
+
 setup(
-    name='osrf_pycommon',
+    name=package_name,
     version='0.1.7',
     packages=packages,
+    data_files=[
+        ('share/' + package_name, ['package.xml']),
+    ],
     install_requires=install_requires,
     zip_safe=True,
     author='William Woodall',
