@@ -1,3 +1,10 @@
+0.1.8 (2019-09-17 11:30:00 -0800)
+---------------------------------
+* Install package manifest. (`#55 <https://github.com/osrf/osrf_pycommon/issues/55>`_)
+  Signed-off-by: Dirk Thomas <dirk-thomas@users.noreply.github.com>
+* Rename ansi_escape_senquences to ansi_escape_sequences keeping backwards compatibility. (`#53 <https://github.com/osrf/osrf_pycommon/issues/53>`_)
+* Contributors: Chris Lalancette, Dirk Thomas
+
 0.1.7 (2019-04-11 12:45:00 -0800)
 ---------------------------------
 * Use keyword arguments only for protocol_class invocations (`#52 <https://github.com/osrf/osrf_pycommon/issues/52>`_)
