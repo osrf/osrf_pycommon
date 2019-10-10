@@ -1,3 +1,7 @@
+0.1.9 (2019-10-10 12:55:00 -0800)
+---------------------------------
+* install resource marker file for package (`#56 <https://github.com/osrf/osrf_pycommon/pull/56>`_)
+
 0.1.8 (2019-09-17 11:30:00 -0800)
 ---------------------------------
 * Install package manifest. (`#55 <https://github.com/osrf/osrf_pycommon/issues/55>`_)
