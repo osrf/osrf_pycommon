@@ -41,7 +41,7 @@ def call_prepare_arguments(func, parser, sysargs=None):
     func_args = [parser]
     # If the provided function takes two arguments and args were given
     # also give the args to the function
-    arguments, _, _, defaults = inspect.getargspec(func)
+    arguments, _, _, defaults, _, _, _ = inspect.getfullargspec(func)
     if arguments[0] == 'self':
         del arguments[0]
     if defaults:
@@ -52,7 +52,7 @@ def call_prepare_arguments(func, parser, sysargs=None):
                          "parameters: '{2}'"
                          .format(func.__name__,
                                  len(arguments),
-                                 ', '.join(inspect.getargspec(func)[0])))
+                                 ', '.join(inspect.getfullargspec(func)[0])))
     if len(arguments) == 2:
         func_args.append(sysargs or [])
     return func(*func_args) or parser
