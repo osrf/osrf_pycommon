@@ -2,6 +2,8 @@ language: python
 python:
   - "2.7"
   - "3.4"
+  - "3.7"
+  - "3.8"
 install:
   - pip install coverage nose flake8 mock
   - pip install git+https://github.com/PyCQA/flake8-import-order.git
