@@ -52,7 +52,7 @@ def call_prepare_arguments(func, parser, sysargs=None):
                          "parameters: '{2}'"
                          .format(func.__name__,
                                  len(arguments),
-                                 ', '.join(inspect.getargspec(func)[0])))
+                                 ', '.join(inspect.getfullargspec(func)[0])))
     if len(arguments) == 2:
         func_args.append(sysargs or [])
     return func(*func_args) or parser

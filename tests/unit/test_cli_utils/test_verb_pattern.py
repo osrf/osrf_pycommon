@@ -66,7 +66,7 @@ class TestCliUtilsVerbPattern(unittest.TestCase):
                 return parser
 
         f = Foo()
-        with self.assertRaisesRegexp(ValueError, 'one or two parameters'):
+        with self.assertRaisesRegex(ValueError, 'one or two parameters'):
             r = cpa(f.fake_prepare_arguments, None)
 
         # Try with less than needed
