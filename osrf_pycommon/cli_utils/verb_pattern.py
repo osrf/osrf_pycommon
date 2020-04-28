@@ -14,6 +14,7 @@
 
 """API for implementing commands and verbs which used the verb pattern."""
 
+import sys
 import inspect
 
 import pkg_resources
@@ -41,18 +42,36 @@ def call_prepare_arguments(func, parser, sysargs=None):
     func_args = [parser]
     # If the provided function takes two arguments and args were given
     # also give the args to the function
-    arguments, _, _, defaults = inspect.getargspec(func)
+
+    # Remove the following if condition and keep else condition once Xenial is
+    # dropped
+    if sys.version_info[0] < 3:
+        arguments, _, _, defaults = inspect.getargspec(func)
+
+    else:
+        arguments, _, _, defaults, _, _, _ = inspect.getfullargspec(func)
+
     if arguments[0] == 'self':
         del arguments[0]
     if defaults:
         arguments = arguments[:-len(defaults)]
     if len(arguments) not in [1, 2]:
+        # Remove the following if condition once Xenial is dropped
+        if sys.version_info[0] < 3:
+            raise ValueError("Given function '{0}' must have one or two "
+                             "parameters (excluding self), but got '{1}' "
+                             "parameters: '{2}'"
+                             .format(func.__name__,
+                                     len(arguments),
+                                     ', '.join(inspect.getargspec(func)[0])))
+
         raise ValueError("Given function '{0}' must have one or two "
                          "parameters (excluding self), but got '{1}' "
                          "parameters: '{2}'"
                          .format(func.__name__,
                                  len(arguments),
-                                 ', '.join(inspect.getargspec(func)[0])))
+                                 ', '.join(inspect.getfullargspec(func)[0])))
+
     if len(arguments) == 2:
         func_args.append(sysargs or [])
     return func(*func_args) or parser
