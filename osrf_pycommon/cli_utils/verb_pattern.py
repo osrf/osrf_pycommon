@@ -49,7 +49,7 @@ def call_prepare_arguments(func, parser, sysargs=None):
         arguments, _, _, defaults = inspect.getargspec(func)
 
     else:
-        arguments, _, _, defaults = inspect.getfullargspec(func)
+        arguments, _, _, defaults, _, _, _ = inspect.getfullargspec(func)
 
     if arguments[0] == 'self':
         del arguments[0]
