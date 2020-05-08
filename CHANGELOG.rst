@@ -1,3 +1,10 @@
+Forthcoming
+-----------
+* fixed simple deprecation warnings (issue `#61 <https://github.com/osrf/osrf_pycommon/issues/61>`_) (`#63 <https://github.com/osrf/osrf_pycommon/issues/63>`_)
+* Also run tests with Python 3.7 and 3.8 (`#60 <https://github.com/osrf/osrf_pycommon/issues/60>`_)
+* Remove old py2 platforms, add Suite3 option with Ubuntu Focal (`#58 <https://github.com/osrf/osrf_pycommon/issues/58>`_)
+* Contributors: Shane Loretz, Zahi Kakish
+
 0.1.9 (2019-10-10 12:55:00 -0800)
 ---------------------------------
 * install resource marker file for package (`#56 <https://github.com/osrf/osrf_pycommon/pull/56>`_)
