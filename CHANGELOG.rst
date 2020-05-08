@@ -1,5 +1,5 @@
-Forthcoming
------------
+0.1.10 (2020-05-08)
+-------------------
 * fixed simple deprecation warnings (issue `#61 <https://github.com/osrf/osrf_pycommon/issues/61>`_) (`#63 <https://github.com/osrf/osrf_pycommon/issues/63>`_)
 * Also run tests with Python 3.7 and 3.8 (`#60 <https://github.com/osrf/osrf_pycommon/issues/60>`_)
 * Remove old py2 platforms, add Suite3 option with Ubuntu Focal (`#58 <https://github.com/osrf/osrf_pycommon/issues/58>`_)

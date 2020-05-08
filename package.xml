@@ -4,7 +4,7 @@
   schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>osrf_pycommon</name>
-  <version>0.1.9</version>
+  <version>0.1.10</version>
   <description>Commonly needed Python modules, used by Python software developed at OSRF.</description>
   <maintainer email="william@osrfoundation.org">William Woodall</maintainer>
 
