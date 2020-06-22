@@ -7,8 +7,6 @@ from setuptools import setup
 install_requires = [
     'setuptools',
 ]
-if sys.version_info < (3, 4):
-    install_requires.append('trollius')
 package_excludes = ['tests*', 'docs*']
 if sys.version_info < (3, ):
     # On non-Python3 installs, avoid installing the asyncio files

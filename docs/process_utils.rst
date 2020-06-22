@@ -12,14 +12,14 @@ These are the main sections of this module:
 Asynchronous Process Utilities
 ------------------------------
 
-There is a function and class which can be used together with your custom `Tollius <http://trollius.readthedocs.org/>`_ or `asyncio <https://docs.python.org/3/library/asyncio.html>`_ run loop.
+There is a function and class which can be used together with your custom `asyncio <https://docs.python.org/3/library/asyncio.html>`_ run loop.
 
 The :py:func:`osrf_pycommon.process_utils.async_execute_process` function is a `coroutine <https://docs.python.org/3/library/asyncio-task.html#coroutines>`_ which allows you to run a process and get the output back bit by bit in real-time, either with stdout and stderr separated or combined.
 This function also allows you to emulate the terminal using a pty simply by toggling a flag in the parameters.
 
 Along side this coroutine is a `Protocol <https://docs.python.org/3/library/asyncio-protocol.html#protocols>`_ class, :py:class:`osrf_pycommon.process_utils.AsyncSubprocessProtocol`, from which you can inherit in order to customize how the yielded output is handled.
 
-Because this coroutine is built on the ``trollius``/``asyncio`` framework's subprocess functions, it is portable and should behave the same on all major OS's. (including on Windows where an IOCP implementation is used)
+Because this coroutine is built on the ``asyncio`` framework's subprocess functions, it is portable and should behave the same on all major OS's. (including on Windows where an IOCP implementation is used)
 
 .. autofunction:: osrf_pycommon.process_utils.async_execute_process
 
@@ -47,7 +47,7 @@ For synchronous execution and output capture of subprocess, there are two functi
 - :py:func:`osrf_pycommon.process_utils.execute_process`
 - :py:func:`osrf_pycommon.process_utils.execute_process_split`
 
-These functions are not yet using the ``trollius``/``asyncio`` framework as a back-end and therefore on Windows will not stream the data from the subprocess as it does on Unix machines.
+These functions are not yet using the ``asyncio`` framework as a back-end and therefore on Windows will not stream the data from the subprocess as it does on Unix machines.
 Instead data will not be yielded until the subprocess is finished and all output is buffered (the normal warnings about long running programs with lots of output apply).
 
 The streaming of output does not work on Windows because on Windows the :py:func:`select.select` method only works on sockets and not file-like objects which are used with subprocess pipes.

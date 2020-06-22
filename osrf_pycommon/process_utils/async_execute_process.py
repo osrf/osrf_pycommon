@@ -16,18 +16,9 @@ from __future__ import print_function
 
 import sys
 
-if sys.version_info >= (3, 4) and 'trollius' not in sys.modules:
-    # If using Python 3.4 or greater, asyncio is always available.
-    # However, if trollius has already been imported, use that.
-    from .async_execute_process_asyncio import async_execute_process
-    from .async_execute_process_asyncio import get_loop
-    from .async_execute_process_asyncio import asyncio
-else:
-    # If Python is < 3.3 then a SyntaxError will occur with asyncio
-    # so we will use Trollius on all platforms below Python 3.4.
-    from .async_execute_process_trollius import async_execute_process
-    from .async_execute_process_trollius import get_loop
-    from .async_execute_process_trollius import asyncio
+from .async_execute_process_asyncio import async_execute_process
+from .async_execute_process_asyncio import get_loop
+from .async_execute_process_asyncio import asyncio
 
 __all__ = [
     'async_execute_process',
@@ -40,8 +31,6 @@ Coroutine to execute a subprocess and yield the output back asynchronously.
 
 This function is meant to be used with the Python :py:mod:`asyncio` module,
 which is available via pip with Python 3.3 and built-in to Python 3.4.
-On Python >= 2.6 you can use the :py:mod:`trollius` module to get the same
-functionality, but without using the new ``yield from`` syntax.
 
 Here is an example of how to use this function:
 
@@ -63,30 +52,7 @@ Here is an example of how to use this function:
     retcode = get_loop().run_until_complete(setup())
     get_loop().close()
 
-That same example using :py:mod:`trollius` would look like this:
-
-.. code-block:: python
-
-    import trollius as asyncio
-    from osrf_pycommon.process_utils import async_execute_process
-    from osrf_pycommon.process_utils import AsyncSubprocessProtocol
-    from osrf_pycommon.process_utils import get_loop
-
-
-    @asyncio.coroutine
-    def setup():
-        transport, protocol = yield asyncio.From(async_execute_process(
-            AsyncSubprocessProtocol, ['ls', '/usr']))
-        returncode = yield asyncio.From(protocol.complete)
-        raise asyncio.Return(returncode)
-
-    retcode = get_loop().run_until_complete(setup())
-    get_loop().close()
-
-This difference is required because in Python < 3.3 the ``yield from`` syntax
-is not valid.
-
-In both examples, the first argument is the default
+Tthe first argument is the default
 :py:class:`AsyncSubprocessProtocol` protocol class, which simply prints output
 from stdout to stdout and output from stderr to stderr.
 
