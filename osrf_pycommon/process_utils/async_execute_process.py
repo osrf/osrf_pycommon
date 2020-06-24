@@ -30,7 +30,7 @@ async_execute_process.__doc__ = """
 Coroutine to execute a subprocess and yield the output back asynchronously.
 
 This function is meant to be used with the Python :py:mod:`asyncio` module,
-which is available via pip with Python 3.3 and built-in to Python 3.4.
+which is available in Python 3.5 or greater.
 
 Here is an example of how to use this function:
 
@@ -61,7 +61,7 @@ and override the ``on_stdout_received``, ``on_stderr_received``, and
 ``on_process_exited`` functions.
 
 See the documentation for the :py:class:`AsyncSubprocessProtocol` class for
-more details, but here is an example which uses asyncio from Python 3.4:
+more details, but here is an example which uses asyncio from Python 3.5:
 
 .. code-block:: python
 
@@ -143,7 +143,7 @@ class AsyncSubprocessProtocol(asyncio.SubprocessProtocol):
     stdout and stderr and does nothing when the process exits.
 
     Data received by the ``on_stdout_received`` and ``on_stderr_received``
-    functions is always in bytes (``str`` in Python2 and ``bytes`` in Python3).
+    functions is always in ``bytes``.
     Therefore, it may be necessary to call ``.decode()`` on the data before
     printing to the screen.
 
