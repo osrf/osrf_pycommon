@@ -42,11 +42,10 @@ Here is an example of how to use this function:
     from osrf_pycommon.process_utils import get_loop
 
 
-    @asyncio.coroutine
-    def setup():
-        transport, protocol = yield from async_execute_process(
+    async def setup():
+        transport, protocol = await async_execute_process(
             AsyncSubprocessProtocol, ['ls', '/usr'])
-        returncode = yield from protocol.complete
+        returncode = await protocol.complete
         return returncode
 
     retcode = get_loop().run_until_complete(setup())
@@ -89,15 +88,14 @@ more details, but here is an example which uses asyncio from Python 3.4:
             self.fh.close()
 
 
-    @asyncio.coroutine
-    def log_command_to_file(cmd, file_name):
+    async def log_command_to_file(cmd, file_name):
 
         def create_protocol(**kwargs):
             return MyProtocol(file_name, **kwargs)
 
-        transport, protocol = yield from async_execute_process(
+        transport, protocol = await async_execute_process(
             create_protocol, cmd)
-        returncode = yield from protocol.complete
+        returncode = await protocol.complete
         return returncode
 
     get_loop().run_until_complete(
@@ -191,11 +189,10 @@ class AsyncSubprocessProtocol(asyncio.SubprocessProtocol):
         from osrf_pycommon.process_utils import get_loop
 
 
-        @asyncio.coroutine
-        def setup():
-            transport, protocol = yield from async_execute_process(
+        async def setup():
+            transport, protocol = await async_execute_process(
                 AsyncSubprocessProtocol, ['ls', '-G', '/usr'])
-            retcode = yield from protocol.complete
+            retcode = await protocol.complete
             print("Exited with", retcode)
 
         # This will block until the protocol.complete Future is done.
