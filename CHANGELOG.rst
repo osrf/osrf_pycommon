@@ -1,5 +1,5 @@
-Forthcoming
------------
+0.2.0 (2020-12-07)
+------------------
 * Python 2/3 version conflict (`#69 <https://github.com/osrf/osrf_pycommon/issues/69>`_)
 * remove jessie because we no longer support 3.4 (`#67 <https://github.com/osrf/osrf_pycommon/issues/67>`_)
 * Remove deprecated use of asyncio.coroutine decorator. (`#64 <https://github.com/osrf/osrf_pycommon/issues/64>`_)
