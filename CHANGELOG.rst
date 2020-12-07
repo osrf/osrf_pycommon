@@ -1,3 +1,11 @@
+Forthcoming
+-----------
+* Python 2/3 version conflict (`#69 <https://github.com/osrf/osrf_pycommon/issues/69>`_)
+* remove jessie because we no longer support 3.4 (`#67 <https://github.com/osrf/osrf_pycommon/issues/67>`_)
+* Remove deprecated use of asyncio.coroutine decorator. (`#64 <https://github.com/osrf/osrf_pycommon/issues/64>`_)
+* Fix the __str_\_ method for windows terminal_color. (`#65 <https://github.com/osrf/osrf_pycommon/issues/65>`_)
+* Contributors: Chris Lalancette, Jochen Sprickerhof, William Woodall
+
 0.1.10 (2020-05-08)
 -------------------
 * fixed simple deprecation warnings (issue `#61 <https://github.com/osrf/osrf_pycommon/issues/61>`_) (`#63 <https://github.com/osrf/osrf_pycommon/issues/63>`_)
