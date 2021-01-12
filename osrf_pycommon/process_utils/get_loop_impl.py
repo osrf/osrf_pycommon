@@ -27,7 +27,11 @@ def get_loop_impl(asyncio):
         try:
             loop = asyncio.get_event_loop()
             if not isinstance(loop, asyncio.ProactorEventLoop):
-                loop.close()  # avoid closing during garbage collection
+                # Before replacing the existing loop, explicitly
+                # close it to prevent an implicit close during
+                # garbage collection, which may or may not be a
+                # problem depending on the loop implementation.
+                loop.close()
                 loop = asyncio.ProactorEventLoop()
                 asyncio.set_event_loop(loop)
         except (RuntimeError, AssertionError):
