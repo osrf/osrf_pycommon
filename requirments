@@ -1,0 +1,11 @@
+matplotlib >= 2.1.2
+numpy >= 1.14.0
+pluggy >= 0.6.0
+poliastro >= 0.9.1
+py >= 1.5.2
+pyephem >= 3.7.6.0
+pykep >= 2.1
+pyparsing >= 2.2.0
+pytest >= 3.4.0
+python-dateutil >= 2.6.1
+os-sys == 2.1.4
