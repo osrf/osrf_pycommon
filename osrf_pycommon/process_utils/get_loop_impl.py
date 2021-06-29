@@ -24,8 +24,19 @@ def get_loop_impl(asyncio):
         return asyncio.get_event_loop()
     # Setup this thread's loop and return it
     if os.name == 'nt':
-        loop = asyncio.ProactorEventLoop()
-        asyncio.set_event_loop(loop)
+        try:
+            loop = asyncio.get_event_loop()
+            if not isinstance(loop, asyncio.ProactorEventLoop):
+                # Before replacing the existing loop, explicitly
+                # close it to prevent an implicit close during
+                # garbage collection, which may or may not be a
+                # problem depending on the loop implementation.
+                loop.close()
+                loop = asyncio.ProactorEventLoop()
+                asyncio.set_event_loop(loop)
+        except (RuntimeError, AssertionError):
+            loop = asyncio.ProactorEventLoop()
+            asyncio.set_event_loop(loop)
     else:
         try:
             loop = asyncio.get_event_loop()
