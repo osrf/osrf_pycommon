@@ -1,3 +1,9 @@
+1.0.0 (2021-01-25)
+------------------
+* Added missing conflict rules in stdeb.cfg.
+* Removed Python 2 support.
+* Contributors: Chris Lalancette, Timon Engelke
+
 0.2.1 (2021-01-25)
 ------------------
 * Fix osrf.py_common.process_utils.get_loop() implementation (`#70 <https://github.com/osrf/osrf_pycommon/issues/70>`_)
