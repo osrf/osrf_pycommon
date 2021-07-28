@@ -1,5 +1,3 @@
-import sys
-
 from setuptools import find_packages
 from setuptools import setup
 
@@ -7,15 +5,7 @@ from setuptools import setup
 install_requires = [
     'setuptools',
 ]
-if sys.version_info < (3, 4):
-    install_requires.append('trollius')
 package_excludes = ['tests*', 'docs*']
-if sys.version_info < (3, ):
-    # On non-Python3 installs, avoid installing the asyncio files
-    # which contain Python3 specific syntax.
-    package_excludes.append(
-        'osrf_pycommon.process_utils.async_execute_process_asyncio'
-    )
 packages = find_packages(exclude=package_excludes)
 
 package_name = 'osrf_pycommon'
@@ -30,6 +20,7 @@ setup(
             ['resource/' + package_name]),
     ],
     install_requires=install_requires,
+    python_requires='>=3.5',
     zip_safe=True,
     author='William Woodall',
     author_email='william@osrfoundation.org',

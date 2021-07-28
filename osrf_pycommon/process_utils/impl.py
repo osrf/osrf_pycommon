@@ -23,11 +23,6 @@ except ImportError:
     # so fallback to non pty implementation
     _execute_process_pty = None
 
-try:
-    _basestring = basestring  # Python 2
-except NameError:
-    _basestring = str  # Python 3
-
 
 def execute_process(cmd, cwd=None, env=None, shell=False, emulate_tty=False):
     """Executes a command with arguments and returns output line by line.
