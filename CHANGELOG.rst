@@ -1,3 +1,8 @@
+0.1.11 (2021-08-31)
+-------------------
+* Fix osrf.py_common.process_utils.get_loop() implementation (`#70 <https://github.com/osrf/osrf_pycommon/issues/70>`_) (`#75 <https://github.com/osrf/osrf_pycommon/issues/75>`_)
+* Contributors: Michel Hidalgo
+
 0.1.10 (2020-05-08)
 -------------------
 * fixed simple deprecation warnings (issue `#61 <https://github.com/osrf/osrf_pycommon/issues/61>`_) (`#63 <https://github.com/osrf/osrf_pycommon/issues/63>`_)
