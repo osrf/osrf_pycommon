@@ -17,7 +17,10 @@
 import sys
 import inspect
 
-import importlib_metadata
+try:
+    import importlib.metadata as importlib_metadata
+except ModuleNotFoundError:
+    import importlib_metadata
 
 
 def call_prepare_arguments(func, parser, sysargs=None):
