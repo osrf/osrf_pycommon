@@ -1,3 +1,11 @@
+Forthcoming
+-----------
+* Replace the use of ``pkg_resources`` with the more modern ``importlib-metadata``. (`#66 <https://github.com/osrf/osrf_pycommon/issues/66>`_)
+  * Note this means that from now on you can only release on >= Ubuntu focal as that was when ``python3-importlib-metadata`` was introduced.
+  * Used the ``1.0.x`` branch if you need an ealier version that still uses ``pkg_resources``.
+  Co-authored-by: William Woodall <william@osrfoundation.org>
+* Contributors: Chris Lalancette
+
 1.0.1 (2022-01-20)
 ------------------
 * Update release distributions. (`#78 <https://github.com/osrf/osrf_pycommon/issues/78>`_)
