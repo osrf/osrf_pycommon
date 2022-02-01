@@ -1,3 +1,8 @@
+Forthcoming
+-----------
+* Limit versions < 2.0.0 to Ubuntu's < focal, due to new dependency available in >= focal only (`#79 <https://github.com/osrf/osrf_pycommon/issues/79>`_)
+* Contributors: William Woodall
+
 1.0.1 (2022-01-20)
 ------------------
 * Update release distributions. (`#78 <https://github.com/osrf/osrf_pycommon/issues/78>`_)
