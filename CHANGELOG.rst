@@ -1,3 +1,8 @@
+1.0.1 (2022-01-20)
+------------------
+* Update release distributions. (`#78 <https://github.com/osrf/osrf_pycommon/issues/78>`_)
+* Contributors: Steven! Ragnarök
+
 1.0.0 (2021-01-25)
 ------------------
 * Added missing conflict rules in stdeb.cfg.
