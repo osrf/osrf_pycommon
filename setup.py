@@ -5,9 +5,8 @@ from setuptools import setup
 
 
 install_requires = [
+    'importlib-metadata;python_version<"3.8"',
 ]
-if sys.version_info < (3, 8):
-    install_requires.append('importlib-metadata')
 package_excludes = ['tests*', 'docs*']
 packages = find_packages(exclude=package_excludes)
 
