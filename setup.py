@@ -5,7 +5,6 @@ from setuptools import setup
 
 
 install_requires = [
-    'setuptools',
 ]
 if sys.version_info < (3, 8):
     install_requires.append('importlib-metadata')
