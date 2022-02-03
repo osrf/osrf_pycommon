@@ -17,7 +17,10 @@
 import sys
 import inspect
 
-import pkg_resources
+try:
+    import importlib.metadata as importlib_metadata
+except ModuleNotFoundError:
+    import importlib_metadata
 
 
 def call_prepare_arguments(func, parser, sysargs=None):
@@ -149,7 +152,7 @@ def list_verbs(group):
     :rtype: list of str
     """
     verbs = []
-    for entry_point in pkg_resources.iter_entry_points(group=group):
+    for entry_point in importlib_metadata.entry_points().get(group, []):
         verbs.append(entry_point.name)
     return verbs
 
@@ -162,7 +165,7 @@ def load_verb_description(verb_name, group):
     :returns: verb description
     :rtype: dict
     """
-    for entry_point in pkg_resources.iter_entry_points(group=group):
+    for entry_point in importlib_metadata.entry_points().get(group, []):
         if entry_point.name == verb_name:
             return entry_point.load()
 

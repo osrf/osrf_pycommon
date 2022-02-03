@@ -1,3 +1,22 @@
+2.0.0 (2022-02-01)
+------------------
+* Replace the use of ``pkg_resources`` with the more modern ``importlib-metadata``. (`#66 <https://github.com/osrf/osrf_pycommon/issues/66>`_)
+  * Note this means that from now on you can only release on >= Ubuntu focal as that was when ``python3-importlib-metadata`` was introduced.
+  * Used the ``1.0.x`` branch if you need an ealier version that still uses ``pkg_resources``.
+  Co-authored-by: William Woodall <william@osrfoundation.org>
+* Contributors: Chris Lalancette
+
+1.0.1 (2022-01-20)
+------------------
+* Update release distributions. (`#78 <https://github.com/osrf/osrf_pycommon/issues/78>`_)
+* Contributors: Steven! Ragnarök
+
+1.0.0 (2021-01-25)
+------------------
+* Added missing conflict rules in stdeb.cfg.
+* Removed Python 2 support.
+* Contributors: Chris Lalancette, Timon Engelke
+
 0.2.1 (2021-01-25)
 ------------------
 * Fix osrf.py_common.process_utils.get_loop() implementation (`#70 <https://github.com/osrf/osrf_pycommon/issues/70>`_)
