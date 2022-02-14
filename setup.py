@@ -1,5 +1,3 @@
-import sys
-
 from setuptools import find_packages
 from setuptools import setup
 
@@ -14,7 +12,7 @@ package_name = 'osrf_pycommon'
 
 setup(
     name=package_name,
-    version='2.0.0',
+    version='2.0.1',
     packages=packages,
     data_files=[
         ('share/' + package_name, ['package.xml']),

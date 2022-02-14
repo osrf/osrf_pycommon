@@ -1,5 +1,5 @@
-Forthcoming
------------
+2.0.1 (2022-02-14)
+------------------
 * Don't release 2.x / master on Debian Buster. (`#83 <https://github.com/osrf/osrf_pycommon/issues/83>`_)
   Debian Buster is on Python 3.7: https://packages.debian.org/buster/python3
 * Stop using mock in favor of unittest.mock. (`#74 <https://github.com/osrf/osrf_pycommon/issues/74>`_)
