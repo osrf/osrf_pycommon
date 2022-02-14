@@ -1,4 +1,4 @@
-2.0.0 (2022-02-01)
+1.0.2 (2022-02-01)
 ------------------
 * Limit versions < 2.0.0 to Ubuntu's < focal, due to new dependency available in >= focal only (`#79 <https://github.com/osrf/osrf_pycommon/issues/79>`_)
 * Contributors: William Woodall
