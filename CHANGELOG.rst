@@ -1,3 +1,24 @@
+Forthcoming
+-----------
+* Don't release 2.x / master on Debian Buster. (`#83 <https://github.com/osrf/osrf_pycommon/issues/83>`_)
+  Debian Buster is on Python 3.7: https://packages.debian.org/buster/python3
+* Stop using mock in favor of unittest.mock. (`#74 <https://github.com/osrf/osrf_pycommon/issues/74>`_)
+  Mock has been deprecated since Python 3.3; see
+  https://pypi.org/project/mock/ .  The recommended replacement
+  is unittest.mock, which seems to be a drop-in replacement.
+  Co-authored-by: William Woodall <william@osrfoundation.org>
+* Fix dependencies (`#81 <https://github.com/osrf/osrf_pycommon/issues/81>`_)
+  * Remove obsolete setuptools from install_requires
+  Now that pkg_resources are no longer used, there is no need to depend
+  on setuptools at runtime.
+  * Fix version-conditional dependency on importlib-metadata
+  Use version markers to depend on importlib-metadata correctly.  Explicit
+  conditions mean that wheels built with setup.py will either have the dep
+  or not depending on what Python version they're built with, rather than
+  what version they're installed on.
+* fix whitespace and date in changelog heading
+* Contributors: Chris Lalancette, Michał Górny, Steven! Ragnarök, William Woodall
+
 2.0.0 (2022-02-01)
 ------------------
 * Replace the use of ``pkg_resources`` with the more modern ``importlib-metadata``. (`#66 <https://github.com/osrf/osrf_pycommon/issues/66>`_)
