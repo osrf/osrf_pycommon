@@ -1,5 +1,5 @@
-Forthcoming
------------
+1.0.3 (2022-02-14)
+------------------
 * Add Debian Buster to the continued 1.x release branch. (`#82 <https://github.com/osrf/osrf_pycommon/issues/82>`_)
   Debian Buster is still on Python 3.7: https://packages.debian.org/buster/python3
   and thus is not supported by the 2.x releases.

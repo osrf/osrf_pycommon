@@ -12,7 +12,7 @@ package_name = 'osrf_pycommon'
 
 setup(
     name=package_name,
-    version='1.0.2',
+    version='1.0.3',
     packages=packages,
     data_files=[
         ('share/' + package_name, ['package.xml']),
