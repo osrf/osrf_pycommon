@@ -152,7 +152,12 @@ def list_verbs(group):
     :rtype: list of str
     """
     verbs = []
-    for entry_point in importlib_metadata.entry_points().get(group, []):
+    entry_points = importlib_metadata.entry_points()
+    if hasattr(entry_points, 'select'):
+        groups = entry_points.select(group=group)
+    else:
+        groups = entry_points.get(group, [])
+    for entry_point in groups:
         verbs.append(entry_point.name)
     return verbs
 
@@ -165,7 +170,12 @@ def load_verb_description(verb_name, group):
     :returns: verb description
     :rtype: dict
     """
-    for entry_point in importlib_metadata.entry_points().get(group, []):
+    entry_points = importlib_metadata.entry_points()
+    if hasattr(entry_points, 'select'):
+        groups = entry_points.select(group=group)
+    else:
+        groups = entry_points.get(group, [])
+    for entry_point in groups:
         if entry_point.name == verb_name:
             return entry_point.load()
 
