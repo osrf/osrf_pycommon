@@ -1,3 +1,8 @@
+2.0.2 (2022-04-08)
+------------------
+* Fix an importlib_metadata warning with Python 3.10. (`#84 <https://github.com/osrf/osrf_pycommon/issues/84>`_)
+* Contributors: Chris Lalancette
+
 2.0.1 (2022-02-14)
 ------------------
 * Don't release 2.x / master on Debian Buster. (`#83 <https://github.com/osrf/osrf_pycommon/issues/83>`_)
