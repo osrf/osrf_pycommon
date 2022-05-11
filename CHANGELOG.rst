@@ -1,3 +1,6 @@
+2.1.0 (2022-05-10)
+------------------
+
 2.0.2 (2022-04-08)
 ------------------
 * Fix an importlib_metadata warning with Python 3.10. (`#84 <https://github.com/osrf/osrf_pycommon/issues/84>`_)
