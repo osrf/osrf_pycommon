@@ -14,6 +14,7 @@
 
 import os
 import threading
+import warnings
 
 _thread_local = threading.local()
 
@@ -39,7 +40,12 @@ def get_loop_impl(asyncio):
             asyncio.set_event_loop(loop)
     else:
         try:
-            loop = asyncio.get_event_loop()
+            with warnings.catch_warnings():
+                warnings.filterwarnings(
+                    'ignore',
+                    'There is no current event loop',
+                    DeprecationWarning)
+                loop = asyncio.get_event_loop()
         except (RuntimeError, AssertionError):
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
