@@ -20,6 +20,13 @@ setup(
             ['resource/' + package_name]),
     ],
     install_requires=install_requires,
+    extras_require={
+        'test': [
+            'flake8',
+            'flake8_import_order',
+            'pytest',
+        ],
+    },
     python_requires='>=3.5',
     zip_safe=True,
     author='William Woodall',
