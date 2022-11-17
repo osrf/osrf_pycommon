@@ -32,7 +32,7 @@ setup(
     author='William Woodall',
     author_email='william@osrfoundation.org',
     maintainer='William Woodall',
-    maintainer_email='william@osrfoundation.org',
+    maintainer_email='william@openrobotics.org',
     url='http://osrf-pycommon.readthedocs.org/',
     keywords=['osrf', 'utilities'],
     classifiers=[
