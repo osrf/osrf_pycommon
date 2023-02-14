@@ -1,3 +1,8 @@
+Forthcoming
+-----------
+* [master] Update maintainers - 2022-11-07 (`#89 <https://github.com/osrf/osrf_pycommon/issues/89>`_)
+* Contributors: Audrow Nash
+
 2.1.1 (2022-11-07)
 ------------------
 * Declare test dependencies in [test] extra (`#86 <https://github.com/osrf/osrf_pycommon/issues/86>`_)
