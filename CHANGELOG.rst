@@ -1,5 +1,5 @@
-Forthcoming
------------
+2.1.2 (2023-02-14)
+------------------
 * [master] Update maintainers - 2022-11-07 (`#89 <https://github.com/osrf/osrf_pycommon/issues/89>`_)
 * Contributors: Audrow Nash
 
