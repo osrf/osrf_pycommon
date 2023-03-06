@@ -12,7 +12,7 @@ package_name = 'osrf_pycommon'
 
 setup(
     name=package_name,
-    version='2.1.0',
+    version='2.1.2',
     packages=packages,
     data_files=[
         ('share/' + package_name, ['package.xml']),
@@ -32,7 +32,7 @@ setup(
     author='William Woodall',
     author_email='william@osrfoundation.org',
     maintainer='William Woodall',
-    maintainer_email='william@osrfoundation.org',
+    maintainer_email='william@openrobotics.org',
     url='http://osrf-pycommon.readthedocs.org/',
     keywords=['osrf', 'utilities'],
     classifiers=[
