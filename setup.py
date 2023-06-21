@@ -12,7 +12,7 @@ package_name = 'osrf_pycommon'
 
 setup(
     name=package_name,
-    version='2.1.0',
+    version='2.1.2',
     packages=packages,
     data_files=[
         ('share/' + package_name, ['package.xml']),
@@ -20,12 +20,19 @@ setup(
             ['resource/' + package_name]),
     ],
     install_requires=install_requires,
+    extras_require={
+        'test': [
+            'flake8',
+            'flake8_import_order',
+            'pytest',
+        ],
+    },
     python_requires='>=3.5',
     zip_safe=True,
     author='William Woodall',
     author_email='william@osrfoundation.org',
     maintainer='William Woodall',
-    maintainer_email='william@osrfoundation.org',
+    maintainer_email='william@openrobotics.org',
     url='http://osrf-pycommon.readthedocs.org/',
     keywords=['osrf', 'utilities'],
     classifiers=[
