@@ -14,6 +14,7 @@
 
 import os
 import threading
+import warnings
 
 _thread_local = threading.local()
 
@@ -39,7 +40,20 @@ def get_loop_impl(asyncio):
             asyncio.set_event_loop(loop)
     else:
         try:
-            loop = asyncio.get_event_loop()
+            # See the note in
+            # https://docs.python.org/3/library/asyncio-eventloop.html#asyncio.get_event_loop # noqa
+            # In short, between Python 3.10.0 and 3.10.8, this unconditionally
+            # raises a DeprecationWarning.  But after 3.10.8, it only raises a
+            # the warning if there is no current loop set in the policy.
+            # Since we are setting a loop in the policy, this warning is
+            # spurious, and will go away once we get away from Python 3.10.6
+            # (verified with Python 3.11.3).
+            with warnings.catch_warnings():
+                warnings.filterwarnings(
+                    'ignore',
+                    'There is no current event loop',
+                    DeprecationWarning)
+                loop = asyncio.get_event_loop()
         except (RuntimeError, AssertionError):
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
