@@ -1,5 +1,5 @@
-Forthcoming
------------
+2.1.3 (2023-07-11)
+------------------
 * Add bookworm as a python3 target (`#91 <https://github.com/osrf/osrf_pycommon/issues/91>`_)
 * Suppress warning for specifically handled behavior (`#87 <https://github.com/osrf/osrf_pycommon/issues/87>`_)
 * Update supported platforms (`#93 <https://github.com/osrf/osrf_pycommon/issues/93>`_)
