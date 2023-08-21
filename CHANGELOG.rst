@@ -1,3 +1,8 @@
+Forthcoming
+-----------
+* Catch all of the spurious warnings from get_event_loop. (`#94 <https://github.com/osrf/osrf_pycommon/issues/94>`_)
+* Contributors: Chris Lalancette
+
 2.1.3 (2023-07-11)
 ------------------
 * Add bookworm as a python3 target (`#91 <https://github.com/osrf/osrf_pycommon/issues/91>`_)
