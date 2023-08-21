@@ -1,5 +1,5 @@
-Forthcoming
------------
+2.1.4 (2023-08-21)
+------------------
 * Catch all of the spurious warnings from get_event_loop. (`#94 <https://github.com/osrf/osrf_pycommon/issues/94>`_)
 * Contributors: Chris Lalancette
 
