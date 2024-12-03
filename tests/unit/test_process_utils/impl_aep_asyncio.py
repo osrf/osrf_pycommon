@@ -10,4 +10,5 @@ async def run(cmd, **kwargs):
     transport, protocol = await async_execute_process(
         create_protocol(), cmd, **kwargs)
     retcode = await protocol.complete
+    transport.close()
     return protocol.stdout_buffer, protocol.stderr_buffer, retcode
