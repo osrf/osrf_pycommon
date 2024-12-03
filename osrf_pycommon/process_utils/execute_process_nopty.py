@@ -130,18 +130,14 @@ def _yield_data(p, fds, left_overs, linesep, fds_to_close=None):
 
 
 def _execute_process_nopty(cmd, cwd, env, shell, stderr_to_stdout=True):
-    if stderr_to_stdout:
-        p = Popen(cmd,
-                  stdin=PIPE, stdout=PIPE, stderr=STDOUT,
-                  cwd=cwd, env=env, shell=shell, close_fds=False)
-    else:
-        p = Popen(cmd,
-                  stdin=PIPE, stdout=PIPE, stderr=PIPE,
-                  cwd=cwd, env=env, shell=shell, close_fds=False)
+    stderr = STDOUT if stderr_to_stdout else PIPE
+    with Popen(
+        cmd, stdin=PIPE, stdout=PIPE, stderr=stderr,
+        cwd=cwd, env=env, shell=shell, close_fds=False
+    ) as p:
+        # Left over data from read which isn't a complete line yet
+        left_overs = {p.stdout: b'', p.stderr: b''}
 
-    # Left over data from read which isn't a complete line yet
-    left_overs = {p.stdout: b'', p.stderr: b''}
+        fds = list(filter(None, [p.stdout, p.stderr]))
 
-    fds = list(filter(None, [p.stdout, p.stderr]))
-
-    return _yield_data(p, fds, left_overs, os.linesep)
+        yield from _yield_data(p, fds, left_overs, os.linesep)
