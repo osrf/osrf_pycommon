@@ -1,5 +1,5 @@
-Forthcoming
------------
+2.1.5 (2024-12-18)
+------------------
 * Align stdeb dependencies with setup.py (`#101 <https://github.com/osrf/osrf_pycommon/issues/101>`_)
   Follow-up to 4b2f3a8e4969f33dced1dc2db2296230e7a55b1d
 * Add '+upstream' suffix to published deb version (`#102 <https://github.com/osrf/osrf_pycommon/issues/102>`_)
