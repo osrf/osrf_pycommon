@@ -1,3 +1,35 @@
+Forthcoming
+-----------
+* Align stdeb dependencies with setup.py (`#101 <https://github.com/osrf/osrf_pycommon/issues/101>`_)
+  Follow-up to 4b2f3a8e4969f33dced1dc2db2296230e7a55b1d
+* Add '+upstream' suffix to published deb version (`#102 <https://github.com/osrf/osrf_pycommon/issues/102>`_)
+  Using a debian version suffix which falls late alphabetically appears to
+  give our packages preference by apt. If a user enables a repository
+  which distributes packages created by OSRF or ROS, it is likely that
+  they wish to use these packages instead of the ones packaged by their
+  platform.
+* Upload coverage results to codecov (`#100 <https://github.com/osrf/osrf_pycommon/issues/100>`_)
+* Update ci.yaml (`#96 <https://github.com/osrf/osrf_pycommon/issues/96>`_)
+  fix node.js <20 deprecation
+  Co-authored-by: Scott K Logan <logans@cottsay.net>
+* Updated python version (`#97 <https://github.com/osrf/osrf_pycommon/issues/97>`_)
+  Python version 3.7 is no longer supported as of June 27, 2023
+  Co-authored-by: Scott K Logan <logans@cottsay.net>
+* Resolve outstanding resource warnings when running tests (`#99 <https://github.com/osrf/osrf_pycommon/issues/99>`_)
+* Update deb platforms for release (`#95 <https://github.com/osrf/osrf_pycommon/issues/95>`_)
+  Added:
+  * Ubuntu Noble (24.04 LTS pre-release)
+  * Debian Trixie (testing)
+  Dropped:
+  * Debian Bullseye (oldstable)
+  Retained:
+  * Debian Bookworm (stable)
+  * Ubuntu Focal (20.04 LTS)
+  * Ubuntu Jammy (22.04 LTS)
+* Remove CODEOWNERS. (`#98 <https://github.com/osrf/osrf_pycommon/issues/98>`_)
+  It is out of date and no longer serving its intended purpose.
+* Contributors: Chris Lalancette, Scott K Logan, Steven! Ragnarök, mosfet80
+
 2.1.4 (2023-08-21)
 ------------------
 * Catch all of the spurious warnings from get_event_loop. (`#94 <https://github.com/osrf/osrf_pycommon/issues/94>`_)
