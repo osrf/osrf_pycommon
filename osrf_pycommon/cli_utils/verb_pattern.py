@@ -109,7 +109,7 @@ def create_subparsers(parser, cmd_name, verbs, group, sysargs, title=None):
     subparser = parser.add_subparsers(
         title=title or '{0} command'.format(cmd_name),
         metavar=metavar,
-        description='Call `{0} {1} -h` for help on a each verb.'.format(
+        description='Call `{0} {1} -h` for help on each verb.'.format(
             cmd_name, metavar),
         dest='verb'
     )
