@@ -1,3 +1,8 @@
+2.1.6 (2025-03-25)
+------------------
+* Merge pull request `#103 <https://github.com/osrf/osrf_pycommon/issues/103>`_ from christophebedard/christophebedard/fix-typo-on-each-verb
+* Contributors: Christophe Bedard
+
 2.1.5 (2024-12-18)
 ------------------
 * Align stdeb dependencies with setup.py (`#101 <https://github.com/osrf/osrf_pycommon/issues/101>`_)
