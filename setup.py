@@ -37,11 +37,14 @@ setup(
     keywords=['osrf', 'utilities'],
     classifiers=[
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python',
     ],
     description="Commonly needed Python modules, "
                 "used by Python software developed at OSRF",
     license='Apache 2.0',
-    test_suite='tests',
+    extras_require={
+        'test': [
+            'pytest',
+        ],
+    },
 )
