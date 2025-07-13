@@ -3,7 +3,7 @@ from setuptools import setup
 
 
 install_requires = [
-    'importlib-metadata;python_version',
+    'importlib-metadata;python_version>=3.5',
 ]
 package_excludes = ['tests*', 'docs*']
 packages = find_packages(exclude=package_excludes)
