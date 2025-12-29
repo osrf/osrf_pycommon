@@ -1,7 +1,6 @@
 from setuptools import find_packages
 from setuptools import setup
 
-
 install_requires = [
     'importlib-metadata;python_version<"3.8"',
 ]
@@ -27,7 +26,7 @@ setup(
             'pytest',
         ],
     },
-    python_requires='>=3.5',
+    python_requires='>=3.9',
     zip_safe=True,
     author='William Woodall',
     author_email='william@osrfoundation.org',
