@@ -10,14 +10,14 @@ jobs:
       strategy:
         matrix:
           os: [macos-latest, ubuntu-22.04, windows-latest]
-          python: [ '3.9', '3.10', '3.11', '3.12']
+          python: [ '3.9', '3.10', '3.11', '3.12', '3.13']
       name: osrf_pycommon tests
       runs-on: ${{matrix.os}}
 
       steps:
       - uses: actions/checkout@v5
       - name: Set up Python ${{matrix.python}}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{matrix.python}}
       - name: Install dependencies
@@ -27,6 +27,6 @@ jobs:
         run: |
           python -m pytest tests --cov=osrf_pycommon
       - name: Upload coverage
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
