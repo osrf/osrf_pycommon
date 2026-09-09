@@ -32,7 +32,6 @@ def split_by_ansi_escape_sequence(string, include_delimiters=False):
     :returns: list of strings, split from original string by escape sequences
     :rtype: list
     """
-    global _ansi_re, _ansi_re_group
     if include_delimiters:
         return _ansi_re_group.split(string)
     return _ansi_re.split(string)
@@ -42,7 +41,6 @@ def remove_ansi_escape_sequences(string):
     """
     Removes any ansi escape sequences found in the given string and returns it.
     """
-    global _ansi_re
     return _ansi_re.sub('', string)
 
 
