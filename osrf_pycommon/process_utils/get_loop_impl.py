@@ -33,7 +33,6 @@ def get_loop_impl(asyncio):
             'There is no current event loop',
             DeprecationWarning)
 
-        global _thread_local
         if getattr(_thread_local, 'loop_has_been_setup', False):
             return asyncio.get_event_loop()
         # Setup this thread's loop and return it
