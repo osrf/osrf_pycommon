@@ -284,7 +284,6 @@ def which(cmd, mode=os.F_OK | os.X_OK, path=None, **kwargs):
     available in Python 3.3.
     """
     kwargs.update({'mode': mode, 'path': path})
-    global _which
     if _which is not None:
         return _which(cmd, **kwargs)
     return _which_backport(cmd, **kwargs)

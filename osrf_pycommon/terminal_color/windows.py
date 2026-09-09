@@ -70,7 +70,6 @@ BRIGHT = 0x08
 
 
 def _print_ansi_color_win32(*args, **kwargs):
-    global STDOUT, STDERR
     # Validate the kwargs
     for kwarg in kwargs:
         if kwarg not in ['sep', 'end', 'file']:
@@ -197,7 +196,6 @@ _ansi_to_win32 = {
 
 
 def _tokenize_ansi_string_for_win32(msg):
-    global _ansi_to_win32
     tokens = filter(None, split_by_ansi_escape_sequence(msg, True))
     tokens = [_ansi_to_win32.get(t, t) for t in tokens]
     return tokens
@@ -260,13 +258,11 @@ else:
     }
 
     def GetConsoleScreenBufferInfo(stream_id=STDOUT):
-        global handles, CONSOLE_SCREEN_BUFFER_INFO, _GetConsoleScreenBufferInfo
         handle = handles[stream_id]
         csbi = CONSOLE_SCREEN_BUFFER_INFO()
         _GetConsoleScreenBufferInfo(handle, ctypes.byref(csbi))
         return csbi
 
     def SetConsoleTextAttribute(stream_id, attrs):
-        global handles, _SetConsoleTextAttribute
         handle = handles[stream_id]
         return _SetConsoleTextAttribute(handle, attrs)

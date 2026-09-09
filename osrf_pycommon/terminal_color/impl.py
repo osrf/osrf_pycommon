@@ -154,13 +154,11 @@ _enabled = True
 
 def ansi(key):
     """Returns the escape sequence for a given ansi color key."""
-    global _ansi, _null_ansi, _enabled
     return (_ansi if _enabled else _null_ansi)[key]
 
 
 def get_ansi_dict():
     """Returns a copy of the dictionary of keys and ansi escape sequences."""
-    global _ansi
     return dict(_ansi)
 
 
@@ -217,7 +215,6 @@ def format_color(msg):
     :returns: colorized string
     :rtype: str
     """
-    global _ansi, _null_ansi, _enabled
     ansi_dict = _null_ansi if not _enabled or _is_windows else _ansi
     return _format_color(msg, ansi_dict)
 
@@ -272,7 +269,6 @@ def print_color(*args, **kwargs):
     On Windows the substituted arguments and keyword arguments are passed to
     :py:func:`print_ansi_color_win32` instead of just :py:obj:`print`.
     """
-    global _ansi, _null_ansi, _enabled
     # If no end given, use reset + new line
     if 'end' not in kwargs:
         kwargs['end'] = '{0}{1}'.format(ansi('reset'), os.linesep)
