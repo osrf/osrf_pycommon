@@ -30,7 +30,7 @@ def get_loop():
 
 async def _async_execute_process_nopty(
     protocol_class, cmd, cwd, env, shell,
-    stderr_to_stdout=True
+    stderr_to_stdout=True, close_fds=False
 ):
     loop = get_loop()
     stderr = asyncio.subprocess.PIPE
@@ -40,11 +40,11 @@ async def _async_execute_process_nopty(
     if shell is True:
         transport, protocol = await loop.subprocess_shell(
             protocol_class, " ".join(cmd), cwd=cwd, env=env,
-            stderr=stderr, close_fds=False)
+            stderr=stderr, close_fds=close_fds)
     else:
         transport, protocol = await loop.subprocess_exec(
             protocol_class, *cmd, cwd=cwd, env=env,
-            stderr=stderr, close_fds=False)
+            stderr=stderr, close_fds=close_fds)
     return transport, protocol
 
 
@@ -52,7 +52,7 @@ if has_pty:
     # If pty is availabe, use them to emulate the tty
     async def _async_execute_process_pty(
         protocol_class, cmd, cwd, env, shell,
-        stderr_to_stdout=True
+        stderr_to_stdout=True, close_fds=False
     ):
         loop = get_loop()
         # Create the PTY's
@@ -73,11 +73,12 @@ if has_pty:
         if shell is True:
             transport, protocol = await loop.subprocess_shell(
                 protocol_factory, " ".join(cmd), cwd=cwd, env=env,
-                stdout=stdout_slave, stderr=stderr_slave, close_fds=False)
+                stdout=stdout_slave, stderr=stderr_slave, close_fds=close_fds)
         else:
             transport, protocol = await loop.subprocess_exec(
                 protocol_factory, *cmd, cwd=cwd, env=env,
-                stdout=stdout_slave, stderr=stderr_slave, close_fds=False)
+                stdout=stdout_slave, stderr=stderr_slave,
+                close_fds=close_fds)
 
         # Close our copies of the slaves,
         # the child's copy of the slave remain open until it terminates
@@ -129,14 +130,14 @@ else:
 
 async def async_execute_process(
     protocol_class, cmd=None, cwd=None, env=None, shell=False,
-    emulate_tty=False, stderr_to_stdout=True
+    emulate_tty=False, stderr_to_stdout=True, close_fds=False
 ):
     if emulate_tty:
         transport, protocol = await _async_execute_process_pty(
             protocol_class, cmd, cwd, env, shell,
-            stderr_to_stdout)
+            stderr_to_stdout, close_fds)
     else:
         transport, protocol = await _async_execute_process_nopty(
             protocol_class, cmd, cwd, env, shell,
-            stderr_to_stdout)
+            stderr_to_stdout, close_fds)
     return transport, protocol

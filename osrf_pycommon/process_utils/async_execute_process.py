@@ -118,6 +118,9 @@ more details on the ``emulate_tty`` parameter.
     and stderr, see :py:func:`osrf_pycommon.process_utils.execute_process`.
 :param bool stderr_to_stdout: if True, stderr is directed to stdout, so they
     are not captured separately.
+:param bool close_fds: if True, the subprocess inherits only stdin, stdout
+    and stderr. If False, it also inherits any other inheritable file
+    descriptors, such as a GNU Make jobserver pipe.
 """
 
 

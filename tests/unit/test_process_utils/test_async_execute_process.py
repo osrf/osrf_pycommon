@@ -1,5 +1,6 @@
 import atexit
 import os
+import socket
 import sys
 import unittest
 
@@ -101,3 +102,20 @@ class TestProcessUtilsAsyncExecuteProcess(unittest.TestCase):
         self.assertIn('err 1', stderr)
         self.assertIn('out 2', stdout)
         self.assertEqual(0, retcode)
+
+    @unittest.skipIf(sys.platform == 'win32', 'checks POSIX file descriptors')
+    def test_async_execute_process_close_fds(self):
+        # Sockets that native code creates are inheritable, unlike the ones
+        # Python creates (PEP 446), so make this one inheritable too.
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+            sock.set_inheritable(True)
+            check = [
+                python, '-c', 'import os, stat, sys; sys.exit(not stat.S_ISSOCK('
+                'os.fstat(int(sys.argv[1])).st_mode))', str(sock.fileno())]
+            for emulate_tty in (False, True):
+                _, _, inherited = loop.run_until_complete(run(
+                    check, emulate_tty=emulate_tty))
+                _, _, closed = loop.run_until_complete(run(
+                    check, emulate_tty=emulate_tty, close_fds=True))
+                self.assertEqual(0, inherited)
+                self.assertNotEqual(0, closed)

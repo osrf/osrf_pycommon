@@ -35,6 +35,7 @@ Treatment of File Descriptors
 
 Like Python 3.4's ``subprocess.Popen`` (and newer versions), all of the ``process_utils`` functions do not close `inheritable <https://docs.python.org/3.4/library/os.html#fd-inheritance>` file descriptors before starting subprocesses.
 This is equivalent to passing ``close_fds=False`` to ``subprocess.Popen`` on all Python versions.
+Pass ``close_fds=True`` to :py:func:`osrf_pycommon.process_utils.async_execute_process` to close them.
 
 For historical context, in Python 3.2, the ``subprocess.Popen`` default for the ``close_fds`` option changed from ``False`` to ``True`` so that file descriptors opened by the parent process were closed before spawning the child process.
 In Python 3.4, `PEP 0446 <https://www.python.org/dev/peps/pep-0446/>`_ additionally made it so even when ``close_fds=False`` file descriptors which are `non-inheritable <https://docs.python.org/3.4/library/os.html#fd-inheritance>`_ are still closed before spawning the subprocess.
