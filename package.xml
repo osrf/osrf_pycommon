@@ -13,8 +13,6 @@
 
   <author email="william@osrfoundation.org">William Woodall</author>
 
-  <exec_depend>python3-importlib-metadata</exec_depend>
-
   <export>
     <build_type>ament_python</build_type>
   </export>
